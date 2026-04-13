@@ -1,16 +1,90 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
-st.set_page_config(page_title="IPL Intelligence Engine", layout="wide")
+# -----------------------------------
+# PAGE CONFIG
+# -----------------------------------
+st.set_page_config(
+    page_title="IPL Intelligence Engine",
+    page_icon="🏏",
+    layout="wide"
+)
 
 # -----------------------------------
-# TRAIN MODEL
+# PREMIUM CSS
+# -----------------------------------
+st.markdown("""
+<style>
+
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(180deg,#020617,#020617,#0f172a);
+    color: white;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 60px;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#020617,#0f172a,#1e293b);
+    box-shadow: 0px 20px 50px rgba(0,0,0,0.8);
+}
+
+.hero h1 {
+    font-size: 50px;
+}
+
+.hero p {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+/* BUTTON */
+.stButton>button {
+    background: linear-gradient(135deg,#ff512f,#dd2476);
+    color:white;
+    border:none;
+    border-radius:12px;
+    height:50px;
+    font-size:16px;
+    width:100%;
+}
+
+/* CARDS */
+.card {
+    padding:18px;
+    border-radius:15px;
+    background: rgba(15,23,42,0.6);
+    margin-top:20px;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg,#020617,#0f172a);
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------------
+# HERO
+# -----------------------------------
+st.markdown("""
+<div class="hero">
+<h1>🏏 IPL Match Intelligence Engine</h1>
+<p>AI-Powered Real-Time Win Prediction • Advanced Cricket Analytics</p>
+</div>
+""", unsafe_allow_html=True)
+
+# -----------------------------------
+# MODEL TRAINING
 # -----------------------------------
 @st.cache_resource
 def train_model():
@@ -18,69 +92,38 @@ def train_model():
     matches = pd.read_csv("matches.csv")
     deliveries = pd.read_csv("deliveries.csv")
 
-    # Merge
     df = deliveries.merge(matches, left_on='match_id', right_on='id')
 
-    # -------------------------------
-    # 1st innings total (TARGET)
-    # -------------------------------
     total_df = df[df['inning'] == 1].groupby('match_id')['total_runs'].sum().reset_index()
     total_df.rename(columns={'total_runs': 'target'}, inplace=True)
 
     df = df.merge(total_df, on='match_id')
 
-    # -------------------------------
-    # 2nd innings only
-    # -------------------------------
     df = df[df['inning'] == 2]
 
-    # -------------------------------
-    # FEATURE ENGINEERING
-    # -------------------------------
-
-    # Current score
     df['current_score'] = df.groupby('match_id')['total_runs'].cumsum()
-
-    # Runs left
     df['runs_left'] = df['target'] - df['current_score']
-
-    # Balls left
     df['balls_left'] = 120 - (df['over'] * 6 + df['ball'])
 
-    # Wickets fallen
     df['player_dismissed'] = df['player_dismissed'].notna().astype(int)
     df['wickets'] = df.groupby('match_id')['player_dismissed'].cumsum()
     df['wickets'] = 10 - df['wickets']
 
-    # Avoid division issues
     df['over'] = df['over'].replace(0, 0.1)
 
-    # Current Run Rate
     df['crr'] = df['current_score'] / (df['over'] + df['ball']/6)
-
-    # Required Run Rate
     df['rrr'] = (df['runs_left'] * 6) / df['balls_left']
 
-    # Clean invalid values
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
 
-    # Result
     df['result'] = np.where(df['batting_team'] == df['winner'], 1, 0)
 
-    # -------------------------------
-    # FINAL DATA
-    # -------------------------------
-    final_df = df[[
-        'batting_team','bowling_team','city',
-        'runs_left','balls_left','wickets',
-        'target','crr','rrr','result'
-    ]]
+    final_df = df[['batting_team','bowling_team','city',
+                   'runs_left','balls_left','wickets',
+                   'target','crr','rrr','result']]
 
     final_df.dropna(inplace=True)
 
-    # -------------------------------
-    # MODEL
-    # -------------------------------
     X = final_df.drop('result', axis=1)
     y = final_df['result']
 
@@ -97,23 +140,31 @@ def train_model():
     ])
 
     pipe.fit(X, y)
-
     return pipe
 
 
 pipe = train_model()
 
 # -----------------------------------
-# UI
+# SIDEBAR
 # -----------------------------------
-st.title("🏏 IPL Match Intelligence Engine")
+st.sidebar.title("🏏 IPL AI Engine")
 
-teams = sorted([
+st.sidebar.markdown("### 👤 Developer")
+st.sidebar.write("Arnav Singh")
+st.sidebar.markdown("[GitHub](https://github.com/Arnav-Singh-5080)")
+
+# -----------------------------------
+# INPUT SECTION
+# -----------------------------------
+st.markdown('<div class="card">🏏 Match Setup</div>', unsafe_allow_html=True)
+
+teams = [
     'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
     'Kolkata Knight Riders','Mumbai Indians',
     'Rajasthan Royals','Royal Challengers Bangalore',
     'Sunrisers Hyderabad'
-])
+]
 
 cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
 
@@ -126,9 +177,9 @@ with col1:
 
 with col2:
     target = st.number_input("Target", min_value=1)
-    score = st.number_input("Score", min_value=0)
-    overs = st.number_input("Overs", min_value=0.1, max_value=20.0)
-    wickets = st.number_input("Wickets", min_value=0, max_value=10)
+    score = st.number_input("Current Score", min_value=0)
+    overs = st.number_input("Overs Completed", min_value=0.1, max_value=20.0)
+    wickets = st.number_input("Wickets Fallen", min_value=0, max_value=10)
 
 # -----------------------------------
 # CALCULATIONS
@@ -142,7 +193,7 @@ rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 # -----------------------------------
 # PREDICTION
 # -----------------------------------
-if st.button("🚀 Predict"):
+if st.button("🚀 Analyze Match"):
 
     input_df = pd.DataFrame({
         'batting_team':[batting_team],
@@ -161,27 +212,71 @@ if st.button("🚀 Predict"):
     win = result[0][1]
     loss = result[0][0]
 
+    st.markdown("---")
+
+    # PROGRESS BARS
     st.subheader("📊 Win Probability")
 
     colA, colB = st.columns(2)
 
-    colA.metric(batting_team, f"{round(win*100)}%")
-    colB.metric(bowling_team, f"{round(loss*100)}%")
+    with colA:
+        st.write(f"**{batting_team}**")
+        st.progress(float(win))
 
-    # Insight
-    st.subheader("🧠 AI Insight")
+    with colB:
+        st.write(f"**{bowling_team}**")
+        st.progress(float(loss))
 
-    if rrr > crr + 2:
-        st.error("High pressure situation")
+    st.write(f"{batting_team}: {round(win*100)}% | {bowling_team}: {round(loss*100)}%")
+
+    # GRAPH
+    st.subheader("📈 Win Probability Curve")
+
+    overs_range = list(range(1, 21))
+    probs = []
+
+    for o in overs_range:
+        temp_balls_left = 120 - (o * 6)
+        temp_rrr = (runs_left * 6) / temp_balls_left if temp_balls_left > 0 else 0
+
+        temp_df = pd.DataFrame({
+            'batting_team':[batting_team],
+            'bowling_team':[bowling_team],
+            'city':[city],
+            'runs_left':[runs_left],
+            'balls_left':[temp_balls_left],
+            'wickets':[wickets_remaining],
+            'target':[target],
+            'crr':[crr],
+            'rrr':[temp_rrr]
+        })
+
+        prob = pipe.predict_proba(temp_df)[0][1]
+        probs.append(prob)
+
+    fig, ax = plt.subplots()
+    ax.plot(overs_range, probs)
+    ax.set_xlabel("Overs")
+    ax.set_ylabel("Win Probability")
+
+    st.pyplot(fig)
+
+    # INSIGHT
+    st.subheader("🧠 AI Match Insight")
+
+    if rrr > crr + 3:
+        st.error("Extreme pressure — unlikely chase")
+    elif rrr > crr + 1.5:
+        st.warning("Pressure building — required rate rising")
     elif wickets_remaining <= 3:
-        st.warning("Few wickets left")
-    elif win > 0.7:
-        st.success("Batting team dominating")
+        st.warning("Few wickets left — risky situation")
+    elif win > 0.75:
+        st.success("Dominating performance")
     else:
-        st.info("Match balanced")
+        st.info("Match evenly balanced")
 
 # -----------------------------------
 # FOOTER
 # -----------------------------------
 st.markdown("---")
-st.markdown("⚡ Built by Arnav Singh • AI-Powered Cricket Analytics")
+st.markdown("⚡ AI-Powered Cricket Analytics • Arnav Singh")
