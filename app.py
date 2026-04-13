@@ -10,6 +10,13 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
+st.markdown("""
+<div style="text-align:center; padding:30px;">
+<h1 style="font-size:48px;">🏏 IPL AI Match Engine</h1>
+<p style="opacity:0.7;">Real-Time Prediction • Simulation • Analytics</p>
+</div>
+""", unsafe_allow_html=True)
+
 # -----------------------------------
 # CONFIG
 # -----------------------------------
