@@ -7,13 +7,10 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
-# -----------------------------------
-# PAGE CONFIG
-# -----------------------------------
 st.set_page_config(page_title="IPL Intelligence Engine", layout="wide")
 
 # -----------------------------------
-# TRAIN MODEL (ROBUST VERSION)
+# TRAIN MODEL
 # -----------------------------------
 @st.cache_resource
 def train_model():
@@ -21,39 +18,28 @@ def train_model():
     matches = pd.read_csv("matches.csv")
     deliveries = pd.read_csv("deliveries.csv")
 
-    # ✅ Fix team names (important for consistency)
-    teams = [
-        'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
-        'Kolkata Knight Riders','Mumbai Indians',
-        'Rajasthan Royals','Royal Challengers Bangalore',
-        'Sunrisers Hyderabad'
-    ]
-
-    matches = matches[matches['team1'].isin(teams)]
-    matches = matches[matches['team2'].isin(teams)]
-
-    # ✅ Merge datasets
+    # Merge
     df = deliveries.merge(matches, left_on='match_id', right_on='id')
 
-    # -----------------------------------
-    # TARGET (1st innings total)
-    # -----------------------------------
+    # -------------------------------
+    # 1st innings total (TARGET)
+    # -------------------------------
     total_df = df[df['inning'] == 1].groupby('match_id')['total_runs'].sum().reset_index()
     total_df.rename(columns={'total_runs': 'target'}, inplace=True)
 
     df = df.merge(total_df, on='match_id')
 
-    # -----------------------------------
-    # SECOND INNINGS ONLY
-    # -----------------------------------
+    # -------------------------------
+    # 2nd innings only
+    # -------------------------------
     df = df[df['inning'] == 2]
 
-    # -----------------------------------
+    # -------------------------------
     # FEATURE ENGINEERING
-    # -----------------------------------
+    # -------------------------------
 
     # Current score
-    df['current_score'] = df.groupby('match_id')['total_runs_x'].cumsum()
+    df['current_score'] = df.groupby('match_id')['total_runs'].cumsum()
 
     # Runs left
     df['runs_left'] = df['target'] - df['current_score']
@@ -62,28 +48,28 @@ def train_model():
     df['balls_left'] = 120 - (df['over'] * 6 + df['ball'])
 
     # Wickets fallen
-    df['player_dismissed'] = df['player_dismissed'].notnull().astype(int)
+    df['player_dismissed'] = df['player_dismissed'].notna().astype(int)
     df['wickets'] = df.groupby('match_id')['player_dismissed'].cumsum()
     df['wickets'] = 10 - df['wickets']
 
-    # Avoid division errors
+    # Avoid division issues
     df['over'] = df['over'].replace(0, 0.1)
 
-    # CRR
+    # Current Run Rate
     df['crr'] = df['current_score'] / (df['over'] + df['ball']/6)
 
-    # RRR
+    # Required Run Rate
     df['rrr'] = (df['runs_left'] * 6) / df['balls_left']
 
-    # Clean infinities
+    # Clean invalid values
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
 
     # Result
     df['result'] = np.where(df['batting_team'] == df['winner'], 1, 0)
 
-    # -----------------------------------
-    # FINAL DATASET
-    # -----------------------------------
+    # -------------------------------
+    # FINAL DATA
+    # -------------------------------
     final_df = df[[
         'batting_team','bowling_team','city',
         'runs_left','balls_left','wickets',
@@ -92,9 +78,9 @@ def train_model():
 
     final_df.dropna(inplace=True)
 
-    # -----------------------------------
+    # -------------------------------
     # MODEL
-    # -----------------------------------
+    # -------------------------------
     X = final_df.drop('result', axis=1)
     y = final_df['result']
 
@@ -122,12 +108,12 @@ pipe = train_model()
 # -----------------------------------
 st.title("🏏 IPL Match Intelligence Engine")
 
-teams = [
+teams = sorted([
     'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
     'Kolkata Knight Riders','Mumbai Indians',
     'Rajasthan Royals','Royal Challengers Bangalore',
     'Sunrisers Hyderabad'
-]
+])
 
 cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
 
@@ -179,11 +165,8 @@ if st.button("🚀 Predict"):
 
     colA, colB = st.columns(2)
 
-    with colA:
-        st.metric(batting_team, f"{round(win*100)}%")
-
-    with colB:
-        st.metric(bowling_team, f"{round(loss*100)}%")
+    colA.metric(batting_team, f"{round(win*100)}%")
+    colB.metric(bowling_team, f"{round(loss*100)}%")
 
     # Insight
     st.subheader("🧠 AI Insight")
