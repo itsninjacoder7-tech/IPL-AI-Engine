@@ -16,7 +16,7 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="IPL AI Engine", layout="wide")
 
 # -----------------------------------
-# 🔥 PREMIUM UI CSS
+# 🎨 UI STYLE
 # -----------------------------------
 st.markdown("""
 <style>
@@ -33,11 +33,6 @@ st.markdown("""
 
 .hero h1 {
     font-size: 52px;
-    font-weight: 700;
-}
-
-.hero p {
-    opacity: 0.7;
 }
 
 .card {
@@ -47,19 +42,6 @@ st.markdown("""
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.08);
     margin-top: 25px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-}
-
-.stSelectbox div, .stNumberInput div {
-    background: rgba(30,41,59,0.8) !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    color: white !important;
 }
 
 .stButton>button {
@@ -67,7 +49,6 @@ st.markdown("""
     color: white;
     border-radius: 12px;
     height: 50px;
-    font-weight: 600;
 }
 
 header {visibility: hidden;}
@@ -209,7 +190,9 @@ if st.button("Analyze Match"):
     st.progress(float(win))
     st.write(f"Win Probability: {round(win*100)}%")
 
-    # Graph
+    # 🔥 DARK GRAPH
+    st.subheader("📈 Win Probability Curve")
+
     overs_range = list(range(1, 21))
     probs = []
 
@@ -219,7 +202,22 @@ if st.button("Analyze Match"):
         probs.append(pipe.predict_proba(temp_df)[0][1])
 
     fig, ax = plt.subplots()
-    ax.plot(overs_range, probs)
+
+    fig.patch.set_facecolor('#020617')
+    ax.set_facecolor('#0f172a')
+
+    ax.plot(overs_range, probs, linewidth=3)
+    ax.fill_between(overs_range, probs, alpha=0.2)
+
+    ax.set_xlabel("Overs", color="white")
+    ax.set_ylabel("Win Probability", color="white")
+    ax.tick_params(colors='white')
+
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    ax.grid(alpha=0.2)
+
     st.pyplot(fig)
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -249,10 +247,10 @@ if st.button("Start Simulation"):
 
         if event == "W":
             current_wickets += 1
-            text = f"WICKET! {current_score}/{current_wickets}"
+            text = f"❌ WICKET! {current_score}/{current_wickets}"
         else:
             current_score += event
-            text = f"{event} runs → {current_score}/{current_wickets}"
+            text = f"🏏 {event} runs → {current_score}/{current_wickets}"
 
         balls += 1
 
