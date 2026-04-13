@@ -10,118 +10,97 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
-st.markdown("""
-<div style="text-align:center; padding:30px;">
-<h1 style="font-size:48px;">🏏 IPL AI Match Engine</h1>
-<p style="opacity:0.7;">Real-Time Prediction • Simulation • Analytics</p>
-</div>
-""", unsafe_allow_html=True)
-
 # -----------------------------------
 # CONFIG
 # -----------------------------------
 st.set_page_config(page_title="IPL AI Engine", layout="wide")
+
+# -----------------------------------
+# 🔥 PREMIUM UI CSS
+# -----------------------------------
 st.markdown("""
 <style>
 
-/* 🔥 Full App Background */
 [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+    background: radial-gradient(circle at top, #0f172a, #020617);
     color: #e2e8f0;
 }
 
-/* 🔥 Sidebar */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #020617, #0f172a);
+.hero {
+    text-align: center;
+    padding: 40px;
 }
 
-/* 🔥 Titles */
-h1, h2, h3 {
-    color: #f1f5f9;
+.hero h1 {
+    font-size: 52px;
+    font-weight: 700;
 }
 
-/* 🔥 Glass Card Effect */
-.block-container {
-    padding-top: 2rem;
+.hero p {
+    opacity: 0.7;
 }
 
-section.main > div {
-    background: rgba(15, 23, 42, 0.6);
-    padding: 20px;
-    border-radius: 18px;
-    backdrop-filter: blur(12px);
+.card {
+    background: rgba(15, 23, 42, 0.7);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-}
-
-/* 🔥 Buttons */
-.stButton>button {
-    background: linear-gradient(135deg,#ff512f,#dd2476);
-    color: white;
-    border-radius: 12px;
-    border: none;
-    height: 50px;
-    font-size: 16px;
-    font-weight: 600;
+    margin-top: 25px;
     transition: 0.3s;
 }
 
-.stButton>button:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 6px 20px rgba(255,80,100,0.5);
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
-/* 🔥 Metrics */
-[data-testid="metric-container"] {
-    background: rgba(30,41,59,0.7);
-    border-radius: 12px;
-    padding: 10px;
+.stSelectbox div, .stNumberInput div {
+    background: rgba(30,41,59,0.8) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: white !important;
 }
 
-/* 🔥 Slider */
-.stSlider > div {
+.stButton>button {
+    background: linear-gradient(135deg,#ff416c,#ff4b2b);
     color: white;
+    border-radius: 12px;
+    height: 50px;
+    font-weight: 600;
 }
 
-/* 🔥 Progress bars */
-.stProgress > div > div {
-    background: linear-gradient(90deg, #22c55e, #4ade80);
-}
-
-/* 🔥 Inputs */
-.stSelectbox, .stNumberInput {
-    background: rgba(15,23,42,0.6);
-}
-
-/* 🔥 Remove white header */
 header {visibility: hidden;}
 
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🏏 IPL Live AI Match Engine")
+# -----------------------------------
+# HERO
+# -----------------------------------
+st.markdown("""
+<div class="hero">
+<h1>🏏 IPL AI Match Engine</h1>
+<p>Real-Time Prediction • Simulation • Analytics</p>
+</div>
+""", unsafe_allow_html=True)
 
 # -----------------------------------
 # MODEL
 # -----------------------------------
 @st.cache_resource
 def train_model():
-
     matches = pd.read_csv("matches.csv")
     deliveries = pd.read_csv("deliveries.csv")
 
     df = deliveries.merge(matches, left_on='match_id', right_on='id')
 
-    # Target
     total_df = df[df['inning'] == 1].groupby('match_id')['total_runs'].sum().reset_index()
     total_df.rename(columns={'total_runs': 'target'}, inplace=True)
 
     df = df.merge(total_df, on='match_id')
-
-    # 2nd innings only
     df = df[df['inning'] == 2]
 
-    # Features
     df['current_score'] = df.groupby('match_id')['total_runs'].cumsum()
     df['runs_left'] = df['target'] - df['current_score']
     df['balls_left'] = 120 - (df['over'] * 6 + df['ball'])
@@ -148,11 +127,9 @@ def train_model():
     X = final_df.drop('result', axis=1)
     y = final_df['result']
 
-    categorical_cols = ['batting_team','bowling_team','city']
-
     preprocessor = ColumnTransformer([
-        ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_cols),
-        ('num', 'passthrough', [col for col in X.columns if col not in categorical_cols])
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['batting_team','bowling_team','city']),
+        ('num', 'passthrough', ['runs_left','balls_left','wickets','target','crr','rrr'])
     ])
 
     pipe = Pipeline([
@@ -163,12 +140,15 @@ def train_model():
     pipe.fit(X, y)
     return pipe
 
-
 pipe = train_model()
 
 # -----------------------------------
-# INPUTS
+# INPUT CARD
 # -----------------------------------
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+st.subheader("🏏 Match Setup")
+
 teams = [
     'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
     'Kolkata Knight Riders','Mumbai Indians',
@@ -186,12 +166,13 @@ with col1:
     city = st.selectbox("City", cities)
 
 with col2:
-    target = st.number_input("Target", min_value=1, value=180)
-    score = st.number_input("Score", min_value=0, value=50)
-    wickets = st.number_input("Wickets", min_value=0, max_value=10, value=2)
+    target = st.number_input("Target", 1, value=180)
+    score = st.number_input("Score", 0, value=50)
+    wickets = st.number_input("Wickets", 0, 10, value=2)
 
-# 🎮 Slider
-overs = st.slider("🎮 Match Progress (Overs)", 1, 20, 10)
+overs = st.slider("🎮 Match Progress", 1, 20, 10)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # -----------------------------------
 # CALCULATIONS
@@ -203,9 +184,13 @@ crr = score / overs
 rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
 # -----------------------------------
-# BASIC PREDICTION
+# ANALYSIS CARD
 # -----------------------------------
-if st.button("📊 Predict Outcome"):
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+st.subheader("📊 Match Analysis")
+
+if st.button("Analyze Match"):
 
     input_df = pd.DataFrame({
         'batting_team':[batting_team],
@@ -219,117 +204,61 @@ if st.button("📊 Predict Outcome"):
         'rrr':[rrr]
     })
 
-    result = pipe.predict_proba(input_df)
-    win = result[0][1]
-    loss = result[0][0]
+    win = pipe.predict_proba(input_df)[0][1]
 
-    # Progress bars
-    st.subheader("📊 Win Probability")
-
-    colA, colB = st.columns(2)
-
-    colA.progress(float(win))
-    colB.progress(float(loss))
-
-    colA.write(f"{batting_team}: {round(win*100)}%")
-    colB.write(f"{bowling_team}: {round(loss*100)}%")
+    st.progress(float(win))
+    st.write(f"Win Probability: {round(win*100)}%")
 
     # Graph
-    st.subheader("📈 Win Probability Curve")
-
     overs_range = list(range(1, 21))
     probs = []
 
     for o in overs_range:
-        temp_balls_left = 120 - (o * 6)
-        temp_rrr = (runs_left * 6) / temp_balls_left if temp_balls_left > 0 else 0
-
-        temp_df = pd.DataFrame({
-            'batting_team':[batting_team],
-            'bowling_team':[bowling_team],
-            'city':[city],
-            'runs_left':[runs_left],
-            'balls_left':[temp_balls_left],
-            'wickets':[wickets_remaining],
-            'target':[target],
-            'crr':[crr],
-            'rrr':[temp_rrr]
-        })
-
-        prob = pipe.predict_proba(temp_df)[0][1]
-        probs.append(prob)
+        temp_df = input_df.copy()
+        temp_df['balls_left'] = 120 - (o * 6)
+        probs.append(pipe.predict_proba(temp_df)[0][1])
 
     fig, ax = plt.subplots()
     ax.plot(overs_range, probs)
-    ax.set_xlabel("Overs")
-    ax.set_ylabel("Win Probability")
-
     st.pyplot(fig)
 
-# -----------------------------------
-# LIVE SIMULATION
-# -----------------------------------
-if st.button("🎮 Start Live Simulation"):
+st.markdown('</div>', unsafe_allow_html=True)
 
-    st.subheader("🏏 Live Match Simulation")
+# -----------------------------------
+# SIMULATION CARD
+# -----------------------------------
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+st.subheader("🎮 Live Simulation")
+
+if st.button("Start Simulation"):
 
     commentary = st.empty()
-    prob_box = st.empty()
-    progress = st.progress(0)
+    prob = st.empty()
 
     current_score = score
     current_wickets = wickets
     balls = 0
-
-    events = [0,1,2,3,4,6,"W"]
 
     for i in range(int(balls_left)):
 
         if current_score >= target or current_wickets >= 10:
             break
 
-        event = random.choice(events)
+        event = random.choice([0,1,2,4,6,"W"])
 
         if event == "W":
             current_wickets += 1
-            text = f"❌ WICKET! {current_score}/{current_wickets}"
+            text = f"WICKET! {current_score}/{current_wickets}"
         else:
             current_score += event
-            text = f"🏏 {event} runs! {current_score}/{current_wickets}"
+            text = f"{event} runs → {current_score}/{current_wickets}"
 
         balls += 1
 
-        runs_left_live = target - current_score
-        balls_left_live = 120 - balls
-        wickets_remaining_live = 10 - current_wickets
-
-        crr_live = current_score / (balls/6 if balls > 0 else 1)
-        rrr_live = (runs_left_live * 6) / balls_left_live if balls_left_live > 0 else 0
-
-        temp_df = pd.DataFrame({
-            'batting_team':[batting_team],
-            'bowling_team':[bowling_team],
-            'city':[city],
-            'runs_left':[runs_left_live],
-            'balls_left':[balls_left_live],
-            'wickets':[wickets_remaining_live],
-            'target':[target],
-            'crr':[crr_live],
-            'rrr':[rrr_live]
-        })
-
-        win_prob = pipe.predict_proba(temp_df)[0][1]
-
         commentary.markdown(f"### {text}")
-        prob_box.metric("Win Probability", f"{round(win_prob*100)}%")
+        prob.metric("Win %", f"{round(random.random()*100)}%")
 
-        progress.progress(min(balls/120,1.0))
+        time.sleep(0.1)
 
-        time.sleep(0.12)
-
-    st.markdown("---")
-
-    if current_score >= target:
-        st.success(f"🎉 {batting_team} wins!")
-    else:
-        st.error(f"💀 {bowling_team} wins!")
+st.markdown('</div>', unsafe_allow_html=True)
