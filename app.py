@@ -14,6 +14,83 @@ from sklearn.pipeline import Pipeline
 # CONFIG
 # -----------------------------------
 st.set_page_config(page_title="IPL AI Engine", layout="wide")
+st.markdown("""
+<style>
+
+/* 🔥 Full App Background */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+    color: #e2e8f0;
+}
+
+/* 🔥 Sidebar */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #020617, #0f172a);
+}
+
+/* 🔥 Titles */
+h1, h2, h3 {
+    color: #f1f5f9;
+}
+
+/* 🔥 Glass Card Effect */
+.block-container {
+    padding-top: 2rem;
+}
+
+section.main > div {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 20px;
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* 🔥 Buttons */
+.stButton>button {
+    background: linear-gradient(135deg,#ff512f,#dd2476);
+    color: white;
+    border-radius: 12px;
+    border: none;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.stButton>button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 20px rgba(255,80,100,0.5);
+}
+
+/* 🔥 Metrics */
+[data-testid="metric-container"] {
+    background: rgba(30,41,59,0.7);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+/* 🔥 Slider */
+.stSlider > div {
+    color: white;
+}
+
+/* 🔥 Progress bars */
+.stProgress > div > div {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+}
+
+/* 🔥 Inputs */
+.stSelectbox, .stNumberInput {
+    background: rgba(15,23,42,0.6);
+}
+
+/* 🔥 Remove white header */
+header {visibility: hidden;}
+
+</style>
+""", unsafe_allow_html=True)
 
 st.title("🏏 IPL Live AI Match Engine")
 
