@@ -44,7 +44,26 @@ html, body, [class*="css"], .stApp {
     min-height: 100vh;
 }
 
-[data-testid="stHeader"] { display: none; }
+/* Hide header bar visually but keep sidebar toggle button accessible */
+[data-testid="stHeader"] {
+    background: transparent !important;
+    border-bottom: none !important;
+}
+[data-testid="stHeader"]::before,
+[data-testid="stHeader"]::after { display: none; }
+
+/* Hide everything in header EXCEPT the sidebar collapse button */
+[data-testid="stHeader"] > * { visibility: hidden; }
+[data-testid="stHeader"] [data-testid="stSidebarCollapsedControl"],
+[data-testid="stHeader"] button[kind="header"],
+[data-testid="stHeader"] [aria-label="Open sidebar"],
+[data-testid="stHeader"] [aria-label="Close sidebar"] {
+    visibility: visible !important;
+    background: rgba(212,175,55,0.08) !important;
+    border: 1px solid rgba(212,175,55,0.2) !important;
+    border-radius: 8px !important;
+    color: #d4af37 !important;
+}
 
 /* ---- SIDEBAR ---- */
 section[data-testid="stSidebar"] {
