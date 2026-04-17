@@ -16,90 +16,66 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="CricScope", layout="wide")
 
 # -----------------------------------
-# SESSION STATE
-# -----------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "Dashboard"
-
-# -----------------------------------
-# 🎨 UI
+# 🎨 PREMIUM FONT + UI
 # -----------------------------------
 st.markdown("""
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@600&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-[data-testid="stAppViewContainer"] {
-    background: radial-gradient(circle at top, #020617, #000000);
-    color: #e5e7eb;
-}
-
-.hero-box {
-    border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 28px;
-    padding: 60px;
-    text-align: center;
-    margin-top: 30px;
-}
-
-.hero-box h1 {
+h1, h2, h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 60px;
-    background: linear-gradient(90deg,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
-section[data-testid="stSidebar"] {
-    background: #020617;
+[data-testid="stAppViewContainer"] {
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: #e2e8f0;
 }
 
-.sidebar-title {
-    text-align:center;
-    color:#d4af37;
-    font-size:24px;
+.hero {
+    text-align: center;
+    padding: 40px;
+}
+
+.hero h1 {
+    font-size: 52px;
+}
+
+.card {
+    background: rgba(15, 23, 42, 0.7);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-top: 25px;
 }
 
 .stButton>button {
     background: linear-gradient(135deg,#d4af37,#b8962e);
-    color:black;
-    border-radius:12px;
-    height:45px;
-    font-weight:600;
+    color: black;
+    border-radius: 12px;
+    height: 50px;
+    font-weight: 600;
 }
 
-header {visibility:hidden;}
+header {visibility: hidden;}
+
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------------
-# SIDEBAR
+# HERO
 # -----------------------------------
-with st.sidebar:
-    st.markdown('<div class="sidebar-title">CricScope</div>', unsafe_allow_html=True)
-
-    if st.button("Dashboard"):
-        st.session_state.page = "Dashboard"
-
-    if st.button("Analysis"):
-        st.session_state.page = "Analysis"
-
-# -----------------------------------
-# TEAM DATA
-# -----------------------------------
-team_data = {
-    "Chennai Super Kings": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/1-5.jpg", "abbr": "CSK", "color": "#facc15"},
-    "Delhi Capitals": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/2-4.jpg", "abbr": "DC", "color": "#2563eb"},
-    "Kings XI Punjab": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/5-4.jpg", "abbr": "PBKS", "color": "#ef4444"},
-    "Kolkata Knight Riders": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/3-4.jpg", "abbr": "KKR", "color": "#7c3aed"},
-    "Mumbai Indians": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/4-4.jpg", "abbr": "MI", "color": "#3b82f6"},
-    "Rajasthan Royals": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/6-4.jpg", "abbr": "RR", "color": "#ec4899"},
-    "Royal Challengers Bangalore": {"logo": "https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/Untitled-4.jpg", "abbr": "RCB", "color": "#dc2626"},
-    "Sunrisers Hyderabad": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/8-4.jpg", "abbr": "SRH", "color": "#f97316"}
-}
+st.markdown("""
+<div class="hero">
+<h1>CricScope</h1>
+<p>Precision Match Analytics</p>
+</div>
+""", unsafe_allow_html=True)
 
 # -----------------------------------
 # MODEL
@@ -159,72 +135,70 @@ def train_model():
 pipe = train_model()
 
 # -----------------------------------
-# DASHBOARD
+# INPUT CARD
 # -----------------------------------
-if st.session_state.page == "Dashboard":
-    st.markdown("""
-    <div class="hero-box">
-    <h1>CricScope</h1>
-    <p>Precision match analytics</p>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+st.subheader("Match Setup")
+
+teams = [
+    'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
+    'Kolkata Knight Riders','Mumbai Indians',
+    'Rajasthan Royals','Royal Challengers Bangalore',
+    'Sunrisers Hyderabad'
+]
+
+cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
+
+col1, col2 = st.columns(2)
+
+with col1:
+    batting_team = st.selectbox("Batting Team", teams)
+    bowling_team = st.selectbox("Bowling Team", teams)
+    city = st.selectbox("City", cities)
+
+with col2:
+    target = st.number_input("Target", 1, value=180)
+    score = st.number_input("Score", 0, value=50)
+    wickets = st.number_input("Wickets", 0, 10, value=2)
+
+overs = st.slider("Match Progress", 1, 20, 10)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # -----------------------------------
-# ANALYSIS PAGE
+# CALCULATIONS
 # -----------------------------------
-if st.session_state.page == "Analysis":
+runs_left = target - score
+balls_left = 120 - (overs * 6)
+wickets_remaining = 10 - wickets
+crr = score / overs
+rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
-    teams = list(team_data.keys())
+# -----------------------------------
+# ANALYSIS CARD (WORKING BUTTON)
+# -----------------------------------
+st.markdown('<div class="card">', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
+st.subheader("Match Analysis")
 
-    with col1:
-        batting_team = st.selectbox("Batting Team", teams)
-        bowling_team = st.selectbox("Bowling Team", teams)
+if st.button("Analyze Match"):
 
-    with col2:
-        target = st.number_input("Target", value=180)
-        score = st.number_input("Score", value=50)
+    input_df = pd.DataFrame({
+        'batting_team':[batting_team],
+        'bowling_team':[bowling_team],
+        'city':[city],
+        'runs_left':[runs_left],
+        'balls_left':[balls_left],
+        'wickets':[wickets_remaining],
+        'target':[target],
+        'crr':[crr],
+        'rrr':[rrr]
+    })
 
-    overs = st.slider("Overs", 1, 20, 10)
-    wickets = st.number_input("Wickets", 0, 10, 2)
+    win = pipe.predict_proba(input_df)[0][1]
 
-    team1 = team_data[batting_team]
-    team2 = team_data[bowling_team]
+    st.progress(float(win))
+    st.write(f"Win Probability: {round(win*100)}%")
 
-    colA, colB, colC = st.columns([2,1,2])
-
-    with colA:
-        st.image(team1['logo'], width=120)
-        st.write(team1['abbr'])
-
-    with colC:
-        st.image(team2['logo'], width=120)
-        st.write(team2['abbr'])
-
-    # BUTTON FIX
-    analyze = st.button("Analyze Match", key="analyze_btn", use_container_width=True)
-
-    if analyze:
-        runs_left = target - score
-        balls_left = 120 - (overs * 6)
-        crr = score / overs
-        rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
-
-        input_df = pd.DataFrame({
-            'batting_team':[batting_team],
-            'bowling_team':[bowling_team],
-            'city':['Mumbai'],
-            'runs_left':[runs_left],
-            'balls_left':[balls_left],
-            'wickets':[10-wickets],
-            'target':[target],
-            'crr':[crr],
-            'rrr':[rrr]
-        })
-
-        win = pipe.predict_proba(input_df)[0][1]
-
-        st.metric(team1['abbr'], f"{round(win*100)}%")
-        st.metric(team2['abbr'], f"{round((1-win)*100)}%")
-        st.progress(float(win))
+st.markdown('</div>', unsafe_allow_html=True)
