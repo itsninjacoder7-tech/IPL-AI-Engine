@@ -13,25 +13,14 @@ from sklearn.pipeline import Pipeline
 # -----------------------------------
 # CONFIG
 # -----------------------------------
-st.set_page_config(page_title="CricScope", layout="wide")
+st.set_page_config(page_title="IPL AI Engine", layout="wide")
 
 # -----------------------------------
-# 🎨 PREMIUM FONT (ONLY CHANGE)
+# 🎨 UI STYLE
 # -----------------------------------
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@600&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-}
-
-h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
-}
-
-/* KEEP YOUR ORIGINAL DESIGN */
 [data-testid="stAppViewContainer"] {
     background: radial-gradient(circle at top, #0f172a, #020617);
     color: #e2e8f0;
@@ -60,7 +49,6 @@ h1, h2, h3 {
     color: white;
     border-radius: 12px;
     height: 50px;
-    font-weight: 600;
 }
 
 header {visibility: hidden;}
@@ -73,7 +61,7 @@ header {visibility: hidden;}
 # -----------------------------------
 st.markdown("""
 <div class="hero">
-<h1>CricScope</h1>
+<h1>🏏 IPL AI Match Engine</h1>
 <p>Real-Time Prediction • Simulation • Analytics</p>
 </div>
 """, unsafe_allow_html=True)
@@ -140,7 +128,7 @@ pipe = train_model()
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
-st.subheader("Match Setup")
+st.subheader("🏏 Match Setup")
 
 teams = [
     'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
@@ -163,7 +151,7 @@ with col2:
     score = st.number_input("Score", 0, value=50)
     wickets = st.number_input("Wickets", 0, 10, value=2)
 
-overs = st.slider("Match Progress", 1, 20, 10)
+overs = st.slider("🎮 Match Progress", 1, 20, 10)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -177,11 +165,11 @@ crr = score / overs
 rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
 # -----------------------------------
-# ANALYSIS CARD (WORKS ✅)
+# ANALYSIS CARD
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
-st.subheader("Match Analysis")
+st.subheader("📊 Match Analysis")
 
 if st.button("Analyze Match"):
 
@@ -201,5 +189,74 @@ if st.button("Analyze Match"):
 
     st.progress(float(win))
     st.write(f"Win Probability: {round(win*100)}%")
+
+    # 🔥 DARK GRAPH
+    st.subheader("📈 Win Probability Curve")
+
+    overs_range = list(range(1, 21))
+    probs = []
+
+    for o in overs_range:
+        temp_df = input_df.copy()
+        temp_df['balls_left'] = 120 - (o * 6)
+        probs.append(pipe.predict_proba(temp_df)[0][1])
+
+    fig, ax = plt.subplots()
+
+    fig.patch.set_facecolor('#020617')
+    ax.set_facecolor('#0f172a')
+
+    ax.plot(overs_range, probs, linewidth=3)
+    ax.fill_between(overs_range, probs, alpha=0.2)
+
+    ax.set_xlabel("Overs", color="white")
+    ax.set_ylabel("Win Probability", color="white")
+    ax.tick_params(colors='white')
+
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    ax.grid(alpha=0.2)
+
+    st.pyplot(fig)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# -----------------------------------
+# SIMULATION CARD
+# -----------------------------------
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+st.subheader("🎮 Live Simulation")
+
+if st.button("Start Simulation"):
+
+    commentary = st.empty()
+    prob = st.empty()
+
+    current_score = score
+    current_wickets = wickets
+    balls = 0
+
+    for i in range(int(balls_left)):
+
+        if current_score >= target or current_wickets >= 10:
+            break
+
+        event = random.choice([0,1,2,4,6,"W"])
+
+        if event == "W":
+            current_wickets += 1
+            text = f"❌ WICKET! {current_score}/{current_wickets}"
+        else:
+            current_score += event
+            text = f"🏏 {event} runs → {current_score}/{current_wickets}"
+
+        balls += 1
+
+        commentary.markdown(f"### {text}")
+        prob.metric("Win %", f"{round(random.random()*100)}%")
+
+        time.sleep(0.1)
 
 st.markdown('</div>', unsafe_allow_html=True)
