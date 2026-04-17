@@ -22,26 +22,22 @@ if "page" not in st.session_state:
     st.session_state.page = "Dashboard"
 
 # -----------------------------------
-# 🎨 PREMIUM UI
+# 🎨 UI
 # -----------------------------------
 st.markdown("""
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@600&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* BACKGROUND */
 [data-testid="stAppViewContainer"] {
     background: radial-gradient(circle at top, #020617, #000000);
     color: #e5e7eb;
 }
 
-/* HERO */
 .hero-box {
-    background: linear-gradient(145deg, rgba(10,15,30,0.9), rgba(2,6,23,0.95));
     border: 1px solid rgba(212,175,55,0.25);
     border-radius: 28px;
     padding: 60px;
@@ -49,69 +45,33 @@ html, body, [class*="css"] {
     margin-top: 30px;
 }
 
-.tag {
-    color: #d4af37;
-    letter-spacing: 2px;
-    font-size: 12px;
-}
-
 .hero-box h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 64px;
+    font-size: 60px;
     background: linear-gradient(90deg,#ffffff,#d4af37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* CARDS */
-.card {
-    background: rgba(2,6,23,0.9);
-    padding: 28px;
-    border-radius: 20px;
-    border: 1px solid rgba(212,175,55,0.15);
-    margin-top: 25px;
-}
-
-/* SIDEBAR */
 section[data-testid="stSidebar"] {
     background: #020617;
-    border-right: 1px solid rgba(212,175,55,0.15);
 }
 
 .sidebar-title {
-    font-family: 'Playfair Display', serif;
-    color: #d4af37;
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    text-align:center;
+    color:#d4af37;
+    font-size:24px;
 }
 
-.profile-box {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.profile-name {
-    color: white;
-    font-weight: 600;
-}
-
-.profile-role {
-    color: #9ca3af;
-    font-size: 12px;
-}
-
-/* BUTTON */
 .stButton>button {
     background: linear-gradient(135deg,#d4af37,#b8962e);
-    color: black;
-    border-radius: 12px;
-    height: 45px;
-    font-weight: 600;
+    color:black;
+    border-radius:12px;
+    height:45px;
+    font-weight:600;
 }
 
-header {visibility: hidden;}
-
+header {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -119,24 +79,13 @@ header {visibility: hidden;}
 # SIDEBAR
 # -----------------------------------
 with st.sidebar:
-
     st.markdown('<div class="sidebar-title">CricScope</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="profile-box">
-        <div class="profile-name">Arnav Singh</div>
-        <div class="profile-role">AI Developer</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    if st.button("🏠 Dashboard"):
+    if st.button("Dashboard"):
         st.session_state.page = "Dashboard"
 
-    if st.button("📊 Match Analysis"):
+    if st.button("Analysis"):
         st.session_state.page = "Analysis"
-
-    if st.button("🎮 Simulation"):
-        st.session_state.page = "Simulation"
 
 # -----------------------------------
 # TEAM DATA
@@ -151,18 +100,6 @@ team_data = {
     "Royal Challengers Bangalore": {"logo": "https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/Untitled-4.jpg", "abbr": "RCB", "color": "#dc2626"},
     "Sunrisers Hyderabad": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/8-4.jpg", "abbr": "SRH", "color": "#f97316"}
 }
-
-# -----------------------------------
-# HERO
-# -----------------------------------
-if st.session_state.page == "Dashboard":
-    st.markdown("""
-    <div class="hero-box">
-    <div class="tag">DATA-DRIVEN CRICKET ANALYTICS</div>
-    <h1>CricScope</h1>
-    <p>Precision match analytics for modern cricket.</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 # -----------------------------------
 # MODEL
@@ -222,75 +159,65 @@ def train_model():
 pipe = train_model()
 
 # -----------------------------------
+# DASHBOARD
+# -----------------------------------
+if st.session_state.page == "Dashboard":
+    st.markdown("""
+    <div class="hero-box">
+    <h1>CricScope</h1>
+    <p>Precision match analytics</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# -----------------------------------
 # ANALYSIS PAGE
 # -----------------------------------
 if st.session_state.page == "Analysis":
 
     teams = list(team_data.keys())
-    cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
-
-    st.subheader("Match Setup")
 
     col1, col2 = st.columns(2)
 
     with col1:
         batting_team = st.selectbox("Batting Team", teams)
         bowling_team = st.selectbox("Bowling Team", teams)
-        city = st.selectbox("City", cities)
 
     with col2:
-        target = st.number_input("Target", 1, value=180)
-        score = st.number_input("Score", 0, value=50)
-        wickets = st.number_input("Wickets", 0, 10, value=2)
+        target = st.number_input("Target", value=180)
+        score = st.number_input("Score", value=50)
 
-    overs = st.slider("Match Progress", 1, 20, 10)
+    overs = st.slider("Overs", 1, 20, 10)
+    wickets = st.number_input("Wickets", 0, 10, 2)
 
-    # LOGOS
     team1 = team_data[batting_team]
     team2 = team_data[bowling_team]
 
     colA, colB, colC = st.columns([2,1,2])
 
     with colA:
-        st.markdown(f"""
-        <div style="text-align:center;">
-        <img src="{team1['logo']}" width="120"
-        style="border-radius:50%; padding:10px; box-shadow:0 0 30px {team1['color']};">
-        <h3 style="color:{team1['color']}">{team1['abbr']}</h3>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with colB:
-        st.markdown("<h2 style='text-align:center;'>VS</h2>", unsafe_allow_html=True)
+        st.image(team1['logo'], width=120)
+        st.write(team1['abbr'])
 
     with colC:
-        st.markdown(f"""
-        <div style="text-align:center;">
-        <img src="{team2['logo']}" width="120"
-        style="border-radius:50%; padding:10px; box-shadow:0 0 30px {team2['color']};">
-        <h3 style="color:{team2['color']}">{team2['abbr']}</h3>
-        </div>
-        """, unsafe_allow_html=True)
+        st.image(team2['logo'], width=120)
+        st.write(team2['abbr'])
 
-    # CALCULATIONS
-    runs_left = target - score
-    balls_left = 120 - (overs * 6)
-    wickets_remaining = 10 - wickets
-    crr = score / overs
-    rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
+    # BUTTON FIX
+    analyze = st.button("Analyze Match", key="analyze_btn", use_container_width=True)
 
-    st.markdown("---")
-
-    # BUTTON (NOW WILL WORK 100%)
-    if st.button("Analyze Match", use_container_width=True):
+    if analyze:
+        runs_left = target - score
+        balls_left = 120 - (overs * 6)
+        crr = score / overs
+        rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
         input_df = pd.DataFrame({
             'batting_team':[batting_team],
             'bowling_team':[bowling_team],
-            'city':[city],
+            'city':['Mumbai'],
             'runs_left':[runs_left],
             'balls_left':[balls_left],
-            'wickets':[wickets_remaining],
+            'wickets':[10-wickets],
             'target':[target],
             'crr':[crr],
             'rrr':[rrr]
@@ -298,20 +225,6 @@ if st.session_state.page == "Analysis":
 
         win = pipe.predict_proba(input_df)[0][1]
 
-        st.subheader("Prediction Result")
-
-        colX, colY = st.columns(2)
-
-        with colX:
-            st.metric(team1['abbr'], f"{round(win*100)}%")
-
-        with colY:
-            st.metric(team2['abbr'], f"{round((1-win)*100)}%")
-
+        st.metric(team1['abbr'], f"{round(win*100)}%")
+        st.metric(team2['abbr'], f"{round((1-win)*100)}%")
         st.progress(float(win))
-    
-# -----------------------------------
-# SIMULATION PAGE
-# -----------------------------------
-if st.session_state.page == "Simulation":
-    st.markdown("### Live Simulation Coming Soon...")
