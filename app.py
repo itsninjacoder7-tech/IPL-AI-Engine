@@ -16,18 +16,153 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="CricScope", layout="wide")
 
 # -----------------------------------
-# TEAM DATA (PNG LOGOS - FIXED)
+# SESSION STATE
+# -----------------------------------
+if "page" not in st.session_state:
+    st.session_state.page = "Dashboard"
+
+# -----------------------------------
+# 🎨 PREMIUM UI
+# -----------------------------------
+st.markdown("""
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@600&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* BACKGROUND */
+[data-testid="stAppViewContainer"] {
+    background: radial-gradient(circle at top, #020617, #000000);
+    color: #e5e7eb;
+}
+
+/* HERO */
+.hero-box {
+    background: linear-gradient(145deg, rgba(10,15,30,0.9), rgba(2,6,23,0.95));
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 28px;
+    padding: 60px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.tag {
+    color: #d4af37;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+.hero-box h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    background: linear-gradient(90deg,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* CARDS */
+.card {
+    background: rgba(2,6,23,0.9);
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid rgba(212,175,55,0.15);
+    margin-top: 25px;
+}
+
+/* SIDEBAR */
+section[data-testid="stSidebar"] {
+    background: #020617;
+    border-right: 1px solid rgba(212,175,55,0.15);
+}
+
+.sidebar-title {
+    font-family: 'Playfair Display', serif;
+    color: #d4af37;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.profile-box {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.profile-name {
+    color: white;
+    font-weight: 600;
+}
+
+.profile-role {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+/* BUTTON */
+.stButton>button {
+    background: linear-gradient(135deg,#d4af37,#b8962e);
+    color: black;
+    border-radius: 12px;
+    height: 45px;
+    font-weight: 600;
+}
+
+header {visibility: hidden;}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------------
+# SIDEBAR
+# -----------------------------------
+with st.sidebar:
+
+    st.markdown('<div class="sidebar-title">CricScope</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="profile-box">
+        <div class="profile-name">Arnav Singh</div>
+        <div class="profile-role">AI Developer</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("🏠 Dashboard"):
+        st.session_state.page = "Dashboard"
+
+    if st.button("📊 Match Analysis"):
+        st.session_state.page = "Analysis"
+
+    if st.button("🎮 Simulation"):
+        st.session_state.page = "Simulation"
+
+# -----------------------------------
+# TEAM DATA
 # -----------------------------------
 team_data = {
-    "Chennai Super Kings": {"logo":"https://i.imgur.com/9R6F7Yk.png","abbr":"CSK","color":"#facc15"},
-    "Delhi Capitals": {"logo":"https://i.imgur.com/jwXz5sK.png","abbr":"DC","color":"#2563eb"},
-    "Kings XI Punjab": {"logo":"https://i.imgur.com/Y7v2YbR.png","abbr":"PBKS","color":"#ef4444"},
-    "Kolkata Knight Riders": {"logo":"https://i.imgur.com/WF7mG6R.png","abbr":"KKR","color":"#7c3aed"},
-    "Mumbai Indians": {"logo":"https://i.imgur.com/8J9pKkP.png","abbr":"MI","color":"#3b82f6"},
-    "Rajasthan Royals": {"logo":"https://i.imgur.com/3k8sQ4G.png","abbr":"RR","color":"#ec4899"},
-    "Royal Challengers Bangalore": {"logo":"https://i.imgur.com/6n6z9Yw.png","abbr":"RCB","color":"#dc2626"},
-    "Sunrisers Hyderabad": {"logo":"https://i.imgur.com/q9k9z7C.png","abbr":"SRH","color":"#f97316"}
+    "Chennai Super Kings": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/1-5.jpg", "abbr": "CSK", "color": "#facc15"},
+    "Delhi Capitals": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/2-4.jpg", "abbr": "DC", "color": "#2563eb"},
+    "Kings XI Punjab": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/5-4.jpg", "abbr": "PBKS", "color": "#ef4444"},
+    "Kolkata Knight Riders": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/3-4.jpg", "abbr": "KKR", "color": "#7c3aed"},
+    "Mumbai Indians": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/4-4.jpg", "abbr": "MI", "color": "#3b82f6"},
+    "Rajasthan Royals": {"logo": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_700/https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/6-4.jpg", "abbr": "RR", "color": "#ec4899"},
+    "Royal Challengers Bangalore": {"logo": "https://assets.designhill.com/design-blog/wp-content/uploads/2025/03/Untitled-4.jpg", "abbr": "RCB", "color": "#dc2626"},
+    "Sunrisers Hyderabad": {"logo": "http://assets.designhill.com/design-blog/wp-content/uploads/2025/03/8-4.jpg", "abbr": "SRH", "color": "#f97316"}
 }
+
+# -----------------------------------
+# HERO
+# -----------------------------------
+if st.session_state.page == "Dashboard":
+    st.markdown("""
+    <div class="hero-box">
+    <div class="tag">DATA-DRIVEN CRICKET ANALYTICS</div>
+    <h1>CricScope</h1>
+    <p>Precision match analytics for modern cricket.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # -----------------------------------
 # MODEL
@@ -87,108 +222,60 @@ def train_model():
 pipe = train_model()
 
 # -----------------------------------
-# SIDEBAR
-# -----------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "Dashboard"
-
-with st.sidebar:
-    st.title("CricScope")
-    st.write("Arnav Singh\nAI Developer")
-
-    if st.button("Dashboard"):
-        st.session_state.page = "Dashboard"
-    if st.button("Match Analysis"):
-        st.session_state.page = "Analysis"
-    if st.button("Simulation"):
-        st.session_state.page = "Simulation"
-
-# -----------------------------------
-# DASHBOARD
-# -----------------------------------
-if st.session_state.page == "Dashboard":
-    st.title("CricScope")
-    st.write("Premium Cricket Analytics Platform")
-
-# -----------------------------------
-# ANALYSIS
+# ANALYSIS PAGE
 # -----------------------------------
 if st.session_state.page == "Analysis":
 
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+
     teams = list(team_data.keys())
+    cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
 
-    batting_team = st.selectbox("Batting Team", teams)
-    bowling_team = st.selectbox("Bowling Team", teams)
-
-    target = st.number_input("Target", value=180)
-    score = st.number_input("Score", value=50)
-    wickets = st.number_input("Wickets", 0, 10, value=2)
-    overs = st.slider("Overs", 1, 20, 10)
-
-    # LOGOS
-    col1, col2, col3 = st.columns([2,1,2])
-
-    t1 = team_data[batting_team]
-    t2 = team_data[bowling_team]
+    col1, col2 = st.columns(2)
 
     with col1:
-        st.image(t1["logo"], width=100)
-        st.markdown(f"### {t1['abbr']}")
+        batting_team = st.selectbox("Batting Team", teams)
+        bowling_team = st.selectbox("Bowling Team", teams)
+        city = st.selectbox("City", cities)
 
     with col2:
-        st.markdown("## VS")
+        target = st.number_input("Target", 1, value=180)
+        score = st.number_input("Score", 0, value=50)
+        wickets = st.number_input("Wickets", 0, 10, value=2)
 
-    with col3:
-        st.image(t2["logo"], width=100)
-        st.markdown(f"### {t2['abbr']}")
+    overs = st.slider("Match Progress", 1, 20, 10)
 
-    # CALCULATIONS
-    runs_left = target - score
-    balls_left = 120 - (overs * 6)
-    wickets_remaining = 10 - wickets
-    crr = score / overs
-    rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
+    # LOGO DISPLAY
+    team1 = team_data[batting_team]
+    team2 = team_data[bowling_team]
 
-    if st.button("Analyze Match"):
-        input_df = pd.DataFrame({
-            'batting_team':[batting_team],
-            'bowling_team':[bowling_team],
-            'city':['Mumbai'],
-            'runs_left':[runs_left],
-            'balls_left':[balls_left],
-            'wickets':[wickets_remaining],
-            'target':[target],
-            'crr':[crr],
-            'rrr':[rrr]
-        })
+    colA, colB, colC = st.columns([2,1,2])
 
-        win = pipe.predict_proba(input_df)[0][1]
+    with colA:
+        st.markdown(f"""
+        <div style="text-align:center;">
+        <img src="{team1['logo']}" width="120"
+        style="border-radius:50%; padding:10px; box-shadow:0 0 30px {team1['color']};">
+        <h3 style="color:{team1['color']}">{team1['abbr']}</h3>
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.success(f"Win Probability: {round(win*100)}%")
+    with colB:
+        st.markdown("<h2 style='text-align:center;'>VS</h2>", unsafe_allow_html=True)
+
+    with colC:
+        st.markdown(f"""
+        <div style="text-align:center;">
+        <img src="{team2['logo']}" width="120"
+        style="border-radius:50%; padding:10px; box-shadow:0 0 30px {team2['color']};">
+        <h3 style="color:{team2['color']}">{team2['abbr']}</h3>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # -----------------------------------
-# SIMULATION
+# SIMULATION PAGE
 # -----------------------------------
 if st.session_state.page == "Simulation":
-
-    st.title("Live Simulation")
-
-    if st.button("Start Simulation"):
-
-        score = 0
-        wickets = 0
-
-        placeholder = st.empty()
-
-        for i in range(30):
-
-            event = random.choice([0,1,2,4,6,"W"])
-
-            if event == "W":
-                wickets += 1
-            else:
-                score += event
-
-            placeholder.markdown(f"### Score: {score}/{wickets}")
-
-            time.sleep(0.2)
+    st.markdown("### Live Simulation Coming Soon...")
