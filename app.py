@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import time
 import random
 
@@ -10,53 +9,37 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
+# ---------------- CONFIG ----------------
 st.set_page_config(page_title="CricScope", layout="wide")
 
-# ---------------- UI ----------------
+# ---------------- CSS ----------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap');
-
-html, body {font-family: Inter;}
-
+body {font-family: sans-serif;}
 [data-testid="stAppViewContainer"] {
     background: radial-gradient(circle at top,#020617,#000);
     color:white;
 }
-
-.hero-box {
-    padding:50px;text-align:center;
-}
-
-.hero-box h1 {
-    font-family:'Playfair Display';
-    font-size:60px;
-    background:linear-gradient(90deg,#fff,#d4af37);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
 .card {
     background:#020617;
-    padding:25px;
+    padding:20px;
     border-radius:15px;
+    border:1px solid rgba(255,255,255,0.05);
     margin-top:20px;
-    border:1px solid rgba(212,175,55,0.1);
 }
-
 section[data-testid="stSidebar"] {
     background:#020617;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- SIDEBAR ----------------
+# ---------------- SESSION ----------------
 if "page" not in st.session_state:
     st.session_state.page = "Dashboard"
 
+# ---------------- SIDEBAR ----------------
 with st.sidebar:
-    st.markdown("## CricScope")
+    st.title("CricScope")
     st.write("Arnav Singh")
 
     if st.button("Dashboard"):
@@ -68,14 +51,10 @@ with st.sidebar:
 
 # ---------------- HERO ----------------
 if st.session_state.page == "Dashboard":
-    st.markdown("""
-    <div class="hero-box">
-    <h1>CricScope</h1>
-    <p>Precision cricket analytics</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("## CricScope")
+    st.write("Precision cricket analytics")
 
-# ---------------- TEAM DATA (PNG FIX) ----------------
+# ---------------- TEAM DATA ----------------
 team_data = {
     "Chennai Super Kings": {"logo":"https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_240/lsci/db/PICTURES/CMS/317000/317000.png","abbr":"CSK","color":"#facc15"},
     "Mumbai Indians": {"logo":"https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_240/lsci/db/PICTURES/CMS/317000/317002.png","abbr":"MI","color":"#3b82f6"},
@@ -94,6 +73,7 @@ def train_model():
     deliveries = pd.read_csv("deliveries.csv")
 
     df = deliveries.merge(matches, left_on='match_id', right_on='id')
+
     total_df = df[df['inning']==1].groupby('match_id')['total_runs'].sum().reset_index()
     total_df.rename(columns={'total_runs':'target'}, inplace=True)
 
@@ -110,7 +90,11 @@ def train_model():
     df['over'] = df['over'].replace(0,0.1)
 
     df['crr'] = df['current_score']/(df['over']+df['ball']/6)
-    df['rrr'] = (df['runs_left']*6)/df['balls_left']
+
+    # SAFE RRR
+    df['rrr'] = np.where(df['balls_left']>0,(df['runs_left']*6)/df['balls_left'],0)
+
+    df.replace([np.inf,-np.inf],np.nan,inplace=True)
 
     df['result'] = np.where(df['batting_team']==df['winner'],1,0)
 
@@ -153,33 +137,57 @@ if st.session_state.page == "Analysis":
     t2 = team_data[bowling_team]
 
     with c1:
-        st.image(t1["logo"], width=100)
+        st.image(t1["logo"], width=90)
         st.markdown(f"### {t1['abbr']}")
 
     with c2:
         st.markdown("## VS")
 
     with c3:
-        st.image(t2["logo"], width=100)
+        st.image(t2["logo"], width=90)
         st.markdown(f"### {t2['abbr']}")
 
-    # BUTTON
+    # ANALYZE BUTTON
     if st.button("Analyze Match"):
+
         runs_left = target-score
         balls_left = 120-(overs*6)
-        win = pipe.predict_proba(pd.DataFrame({
+        wickets_rem = 10-wickets
+        crr = score/overs
+        rrr = (runs_left*6/balls_left) if balls_left>0 else 0
+
+        input_df = pd.DataFrame({
             'batting_team':[batting_team],
             'bowling_team':[bowling_team],
             'city':[city],
             'runs_left':[runs_left],
             'balls_left':[balls_left],
-            'wickets':[10-wickets],
+            'wickets':[wickets_rem],
             'target':[target],
-            'crr':[score/overs],
-            'rrr':[runs_left*6/balls_left]
-        }))[0][1]
+            'crr':[crr],
+            'rrr':[rrr]
+        })
 
-        st.success(f"Win Probability: {round(win*100)}%")
+        win = pipe.predict_proba(input_df)[0][1]
+        lose = 1-win
+
+        st.success(f"{t1['abbr']} Win Probability: {round(win*100)}%")
+
+        # ---------------- WIN BAR ----------------
+        st.markdown("### Win Probability")
+
+        bar_html = f"""
+        <div style="display:flex;height:30px;border-radius:20px;overflow:hidden;">
+            <div style="width:{win*100}%;background:{t1['color']};text-align:center;">
+                {round(win*100)}%
+            </div>
+            <div style="width:{lose*100}%;background:{t2['color']};text-align:center;">
+                {round(lose*100)}%
+            </div>
+        </div>
+        """
+
+        st.markdown(bar_html, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -189,10 +197,12 @@ if st.session_state.page == "Simulation":
     st.markdown("## Live Simulation")
 
     if st.button("Start Simulation"):
+
         score = 0
         wickets = 0
 
         for i in range(30):
+
             event = random.choice([0,1,2,4,6,"W"])
 
             if event=="W":
