@@ -44,52 +44,10 @@ html, body, [class*="css"], .stApp {
     min-height: 100vh;
 }
 
-/* Header: transparent, no border, but keep it in DOM for toggle button */
-[data-testid="stHeader"] {
-    background: transparent !important;
-    border-bottom: none !important;
-    height: 0px !important;
-    min-height: 0px !important;
-    overflow: visible !important;
-}
-
-/* Hide Streamlit toolbar/menu items */
-[data-testid="stToolbar"],
-[data-testid="stDecoration"],
-#MainMenu,
-footer { visibility: hidden; display: none; }
-
-/* Sidebar collapsed re-open button — cover every selector Streamlit uses */
-[data-testid="stSidebarCollapsedControl"] {
-    visibility: visible !important;
-    display: flex !important;
-    position: fixed !important;
-    top: 14px !important;
-    left: 14px !important;
-    z-index: 9999 !important;
-    background: rgba(12,12,12,0.92) !important;
-    border: 1px solid rgba(212,175,55,0.3) !important;
-    border-radius: 10px !important;
-    padding: 6px !important;
-    backdrop-filter: blur(8px) !important;
-}
-[data-testid="stSidebarCollapsedControl"] button,
-[data-testid="stSidebarCollapsedControl"] svg {
-    color: #d4af37 !important;
-    stroke: #d4af37 !important;
-    visibility: visible !important;
-}
-
-/* Sidebar collapse button (arrow inside open sidebar) */
-[data-testid="stSidebarCollapseButton"] {
-    visibility: visible !important;
-}
-[data-testid="stSidebarCollapseButton"] button {
-    background: rgba(212,175,55,0.06) !important;
-    border: 1px solid rgba(212,175,55,0.15) !important;
-    border-radius: 8px !important;
-    color: #d4af37 !important;
-}
+/* Hide only Streamlit branding — leave header & sidebar toggle untouched */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+[data-testid="stDecoration"] { display: none; }
 
 /* ---- SIDEBAR ---- */
 section[data-testid="stSidebar"] {
