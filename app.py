@@ -13,10 +13,10 @@ from sklearn.pipeline import Pipeline
 # -----------------------------------
 # CONFIG
 # -----------------------------------
-st.set_page_config(page_title="IPL Intelligence Engine", layout="wide")
+st.set_page_config(page_title="CricScope", layout="wide")
 
 # -----------------------------------
-# 🎨 ULTRA PREMIUM FINTECH UI
+# 🎨 PREMIUM UI
 # -----------------------------------
 st.markdown("""
 <style>
@@ -29,137 +29,144 @@ html, body, [class*="css"] {
 
 /* BACKGROUND */
 [data-testid="stAppViewContainer"] {
-    background: radial-gradient(circle at top, #020617, #020617 60%, #000000);
+    background: radial-gradient(circle at top, #020617, #000000);
     color: #e5e7eb;
 }
 
-/* HERO CONTAINER */
+/* HERO */
 .hero-box {
-    background: linear-gradient(145deg, rgba(10,15,30,0.9), rgba(2,6,23,0.95));
+    background: rgba(2,6,23,0.9);
     border: 1px solid rgba(212,175,55,0.25);
     border-radius: 28px;
-    padding: 60px 40px;
-    margin-top: 30px;
+    padding: 50px;
+    margin-top: 20px;
     text-align: center;
-    box-shadow: 0 0 80px rgba(212,175,55,0.08);
 }
 
-/* TAG */
 .tag {
-    display: inline-block;
-    padding: 8px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(212,175,55,0.4);
     color: #d4af37;
     font-size: 12px;
     letter-spacing: 2px;
-    margin-bottom: 20px;
 }
 
-/* TITLE */
 .hero-box h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 64px;
-    font-weight: 600;
+    font-size: 60px;
     background: linear-gradient(90deg,#ffffff,#d4af37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* SUBTEXT */
 .hero-box p {
     color: #9ca3af;
-    font-size: 18px;
-    margin-top: 10px;
 }
 
-/* STATS */
-.stats {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 40px;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-item h2 {
-    color: #d4af37;
-    font-size: 28px;
-}
-
-.stat-item p {
-    color: #9ca3af;
-    font-size: 12px;
-    letter-spacing: 1px;
-}
-
-/* CARDS */
+/* CARD */
 .card {
     background: rgba(2,6,23,0.9);
-    padding: 28px;
-    border-radius: 20px;
-    border: 1px solid rgba(212,175,55,0.15);
-    margin-top: 25px;
-    box-shadow: 0 0 40px rgba(212,175,55,0.05);
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid rgba(212,175,55,0.1);
+    margin-top: 20px;
 }
 
-/* HEADINGS */
-h2, h3 {
+/* SIDEBAR */
+section[data-testid="stSidebar"] {
+    background: #020617;
+    border-right: 1px solid rgba(212,175,55,0.15);
+}
+
+.sidebar-title {
+    text-align:center;
     font-family: 'Playfair Display', serif;
-    color: #f9fafb;
+    color:#d4af37;
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+.profile-box {
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.profile-name {
+    color:white;
+    font-weight:600;
+}
+
+.profile-role {
+    color:#9ca3af;
+    font-size:12px;
 }
 
 /* BUTTON */
 .stButton>button {
     background: linear-gradient(135deg,#d4af37,#b8962e);
     color: black;
-    border-radius: 12px;
-    height: 48px;
-    font-weight: 600;
+    border-radius: 10px;
+    height: 45px;
     border: none;
 }
 
-/* METRIC */
-[data-testid="stMetric"] {
-    background: rgba(212,175,55,0.05);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* HIDE STREAMLIT HEADER */
-header {visibility: hidden;}
+header {visibility:hidden;}
 
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------------
+# SESSION STATE
+# -----------------------------------
+if "page" not in st.session_state:
+    st.session_state.page = "Dashboard"
+
+# -----------------------------------
+# SIDEBAR
+# -----------------------------------
+with st.sidebar:
+
+    st.markdown('<div class="sidebar-title">CricScope</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="profile-box">
+        <div class="profile-name">Arnav Singh</div>
+        <div class="profile-role">AI Developer</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("🏠 Dashboard"):
+        st.session_state.page = "Dashboard"
+
+    if st.button("📊 Match Analysis"):
+        st.session_state.page = "Analysis"
+
+    if st.button("🎮 Simulation"):
+        st.session_state.page = "Simulation"
+
+# -----------------------------------
 # HERO
 # -----------------------------------
-st.markdown("""
-<div class="hero-box">
-<div class="tag">ADVANCED MATCH ANALYTICS</div>
-<h1>CricScope</h1>
-<p>Precision match analytics for modern cricket — powered by real-time data and predictive modeling.</p>
+if st.session_state.page == "Dashboard":
+    st.markdown("""
+    <div class="hero-box">
+    <div class="tag">DATA-DRIVEN CRICKET ANALYTICS</div>
+    <h1>CricScope</h1>
+    <p>Precision match analytics for modern cricket.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-<div class="stats">
-    <div class="stat-item">
-        <h2>92%</h2>
-        <p>MODEL ACCURACY</p>
-    </div>
-    <div class="stat-item">
-        <h2>&lt;1s</h2>
-        <p>RESPONSE TIME</p>
-    </div>
-    <div class="stat-item">
-        <h2>10+</h2>
-        <p>KEY METRICS</p>
-    </div>
-</div>
-</div>
-""", unsafe_allow_html=True)
+# -----------------------------------
+# TEAM DATA
+# -----------------------------------
+team_data = {
+    "Chennai Super Kings": {"logo":"https://upload.wikimedia.org/wikipedia/en/2/2e/Chennai_Super_Kings_Logo.svg","abbr":"CSK","color":"#facc15"},
+    "Delhi Capitals": {"logo":"https://upload.wikimedia.org/wikipedia/en/2/2f/Delhi_Capitals.svg","abbr":"DC","color":"#2563eb"},
+    "Kings XI Punjab": {"logo":"https://upload.wikimedia.org/wikipedia/en/d/d4/Punjab_Kings_Logo.svg","abbr":"PBKS","color":"#ef4444"},
+    "Kolkata Knight Riders": {"logo":"https://upload.wikimedia.org/wikipedia/en/4/4c/Kolkata_Knight_Riders_Logo.svg","abbr":"KKR","color":"#7c3aed"},
+    "Mumbai Indians": {"logo":"https://upload.wikimedia.org/wikipedia/en/c/cd/Mumbai_Indians_Logo.svg","abbr":"MI","color":"#3b82f6"},
+    "Rajasthan Royals": {"logo":"https://upload.wikimedia.org/wikipedia/en/6/60/Rajasthan_Royals_Logo.svg","abbr":"RR","color":"#ec4899"},
+    "Royal Challengers Bangalore": {"logo":"https://upload.wikimedia.org/wikipedia/en/4/4b/Royal_Challengers_Bangalore_Logo.svg","abbr":"RCB","color":"#dc2626"},
+    "Sunrisers Hyderabad": {"logo":"https://upload.wikimedia.org/wikipedia/en/8/81/Sunrisers_Hyderabad.svg","abbr":"SRH","color":"#f97316"}
+}
 
 # -----------------------------------
 # MODEL
@@ -219,70 +226,45 @@ def train_model():
 pipe = train_model()
 
 # -----------------------------------
-# INPUT CARD
+# ANALYSIS PAGE
 # -----------------------------------
-st.markdown('<div class="card">', unsafe_allow_html=True)
+if st.session_state.page == "Analysis":
 
-st.subheader("Match Setup")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
 
-teams = [
-    'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
-    'Kolkata Knight Riders','Mumbai Indians',
-    'Rajasthan Royals','Royal Challengers Bangalore',
-    'Sunrisers Hyderabad'
-]
+    teams = list(team_data.keys())
+    cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
 
-cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
-
-col1, col2 = st.columns(2)
-
-with col1:
     batting_team = st.selectbox("Batting Team", teams)
     bowling_team = st.selectbox("Bowling Team", teams)
     city = st.selectbox("City", cities)
 
-with col2:
     target = st.number_input("Target", 1, value=180)
     score = st.number_input("Score", 0, value=50)
     wickets = st.number_input("Wickets", 0, 10, value=2)
+    overs = st.slider("Overs", 1, 20, 10)
 
-overs = st.slider("Match Progress", 1, 20, 10)
+    # 🔥 LOGO DISPLAY
+    col1, col2, col3 = st.columns([2,1,2])
 
-st.markdown('</div>', unsafe_allow_html=True)
+    t1 = team_data[batting_team]
+    t2 = team_data[bowling_team]
 
-# -----------------------------------
-# CALCULATIONS
-# -----------------------------------
-runs_left = target - score
-balls_left = 120 - (overs * 6)
-wickets_remaining = 10 - wickets
-crr = score / overs
-rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
+    with col1:
+        st.markdown(f"""<div style="text-align:center;">
+        <img src="{t1['logo']}" width="110"
+        style="border-radius:50%; box-shadow:0 0 25px {t1['color']};">
+        <h3 style="color:{t1['color']}">{t1['abbr']}</h3>
+        </div>""", unsafe_allow_html=True)
 
-# -----------------------------------
-# ANALYSIS
-# -----------------------------------
-st.markdown('<div class="card">', unsafe_allow_html=True)
+    with col2:
+        st.markdown("<h2 style='text-align:center;'>VS</h2>", unsafe_allow_html=True)
 
-st.subheader("Match Analysis")
+    with col3:
+        st.markdown(f"""<div style="text-align:center;">
+        <img src="{t2['logo']}" width="110"
+        style="border-radius:50%; box-shadow:0 0 25px {t2['color']};">
+        <h3 style="color:{t2['color']}">{t2['abbr']}</h3>
+        </div>""", unsafe_allow_html=True)
 
-if st.button("Analyze Match"):
-
-    input_df = pd.DataFrame({
-        'batting_team':[batting_team],
-        'bowling_team':[bowling_team],
-        'city':[city],
-        'runs_left':[runs_left],
-        'balls_left':[balls_left],
-        'wickets':[wickets_remaining],
-        'target':[target],
-        'crr':[crr],
-        'rrr':[rrr]
-    })
-
-    win = pipe.predict_proba(input_df)[0][1]
-
-    st.progress(float(win))
-    st.write(f"Win Probability: {round(win*100)}%")
-
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
