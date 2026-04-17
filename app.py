@@ -572,6 +572,24 @@ hr {
 ::-webkit-scrollbar-track { background: #0c0c0c; }
 ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.25); border-radius: 4px; }
 
+/* ---- PROFILE CARD LINKS ---- */
+.profile-link {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; padding: 8px 10px;
+    border-radius: 9px; margin-bottom: 4px;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+.profile-link:hover { background: rgba(212,175,55,0.07); }
+.profile-link span {
+    font-size: 11px; color: rgba(200,185,140,0.55);
+    font-weight: 400; letter-spacing: 0.2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    transition: color 0.2s;
+}
+.profile-link:hover span { color: rgba(212,175,55,0.8); }
+.profile-link svg { flex-shrink: 0; }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -693,120 +711,48 @@ with st.sidebar:
 
     st.markdown("""
         <div style="padding: 0 18px 24px;">
+            <div style="background:rgba(255,255,255,0.025);border:1px solid rgba(212,175,55,0.12);
+                        border-radius:16px;padding:20px 18px 18px;position:relative;overflow:hidden;">
+                <div style="position:absolute;top:0;left:0;right:0;height:60px;
+                            background:radial-gradient(ellipse at 50% 0%,rgba(212,175,55,0.08) 0%,transparent 70%);
+                            pointer-events:none;"></div>
+                <div style="width:44px;height:44px;border-radius:50%;
+                            background:linear-gradient(135deg,#c9a227,#f0d060);
+                            display:flex;align-items:center;justify-content:center;
+                            font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+                            color:#0a0800;margin-bottom:12px;
+                            box-shadow:0 0 18px rgba(212,175,55,0.25);letter-spacing:0.5px;">AS</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;
+                            color:#f0e8cc;letter-spacing:0.5px;margin-bottom:3px;">Arnav Singh</div>
+                <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;
+                            color:rgba(212,175,55,0.4);margin-bottom:18px;font-weight:500;">ML · Data · Analytics</div>
+                <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.15),transparent);margin-bottom:16px;"></div>
 
-            <!-- Avatar + Name Row -->
-            <div style="
-                background: rgba(255,255,255,0.025);
-                border: 1px solid rgba(212,175,55,0.12);
-                border-radius: 16px;
-                padding: 20px 18px 18px;
-                position: relative;
-                overflow: hidden;
-            ">
-                <!-- subtle top glow -->
-                <div style="
-                    position:absolute; top:0; left:0; right:0; height:60px;
-                    background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 70%);
-                    pointer-events:none;
-                "></div>
-
-                <!-- Avatar circle with initials -->
-                <div style="
-                    width: 44px; height: 44px; border-radius: 50%;
-                    background: linear-gradient(135deg, #c9a227, #f0d060);
-                    display: flex; align-items: center; justify-content: center;
-                    font-family: 'Cormorant Garamond', serif;
-                    font-size: 18px; font-weight: 600; color: #0a0800;
-                    margin-bottom: 12px;
-                    box-shadow: 0 0 18px rgba(212,175,55,0.25);
-                    letter-spacing: 0.5px;
-                ">AS</div>
-
-                <!-- Name -->
-                <div style="
-                    font-family: 'Cormorant Garamond', serif;
-                    font-size: 17px; font-weight: 600;
-                    color: #f0e8cc; letter-spacing: 0.5px;
-                    margin-bottom: 3px;
-                ">Arnav Singh</div>
-
-                <!-- Role label -->
-                <div style="
-                    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-                    color: rgba(212,175,55,0.4); margin-bottom: 18px; font-weight: 500;
-                ">ML · Data · Analytics</div>
-
-                <!-- Divider -->
-                <div style="height:1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent); margin-bottom:16px;"></div>
-
-                <!-- Email link -->
-                <a href="mailto:itsarnav.singh80@gmail.com" style="
-                    display: flex; align-items: center; gap: 10px;
-                    text-decoration: none;
-                    padding: 8px 10px;
-                    border-radius: 9px;
-                    transition: background 0.2s;
-                    margin-bottom: 4px;
-                " onmouseover="this.style.background='rgba(212,175,55,0.07)'"
-                   onmouseout="this.style.background='transparent'">
-                    <!-- Email icon -->
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(212,175,55,0.6)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="4" width="20" height="16" rx="3"/>
-                        <polyline points="2,4 12,13 22,4"/>
+                <a class="profile-link" href="mailto:itsarnav.singh80@gmail.com">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(212,175,55,0.65)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="3"/><polyline points="2,4 12,13 22,4"/>
                     </svg>
-                    <span style="font-size:11px; color:rgba(200,185,140,0.55); font-weight:400; letter-spacing:0.2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                        itsarnav.singh80@gmail.com
-                    </span>
+                    <span>itsarnav.singh80@gmail.com</span>
                 </a>
 
-                <!-- LinkedIn link -->
-                <a href="https://www.linkedin.com/in/arnav-singh-a87847351" target="_blank" style="
-                    display: flex; align-items: center; gap: 10px;
-                    text-decoration: none;
-                    padding: 8px 10px;
-                    border-radius: 9px;
-                    transition: background 0.2s;
-                    margin-bottom: 4px;
-                " onmouseover="this.style.background='rgba(212,175,55,0.07)'"
-                   onmouseout="this.style.background='transparent'">
-                    <!-- LinkedIn icon -->
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(212,175,55,0.6)">
+                <a class="profile-link" href="https://www.linkedin.com/in/arnav-singh-a87847351" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(212,175,55,0.65)">
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                        <rect x="2" y="9" width="4" height="12"/>
-                        <circle cx="4" cy="4" r="2"/>
+                        <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
                     </svg>
-                    <span style="font-size:11px; color:rgba(200,185,140,0.55); font-weight:400; letter-spacing:0.2px;">
-                        linkedin.com/in/arnav-singh
-                    </span>
+                    <span>linkedin.com/in/arnav-singh</span>
                 </a>
 
-                <!-- GitHub link -->
-                <a href="https://github.com/Arnav-Singh-5080" target="_blank" style="
-                    display: flex; align-items: center; gap: 10px;
-                    text-decoration: none;
-                    padding: 8px 10px;
-                    border-radius: 9px;
-                    transition: background 0.2s;
-                " onmouseover="this.style.background='rgba(212,175,55,0.07)'"
-                   onmouseout="this.style.background='transparent'">
-                    <!-- GitHub icon -->
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(212,175,55,0.6)">
+                <a class="profile-link" href="https://github.com/Arnav-Singh-5080" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(212,175,55,0.65)">
                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                     </svg>
-                    <span style="font-size:11px; color:rgba(200,185,140,0.55); font-weight:400; letter-spacing:0.2px;">
-                        Arnav-Singh-5080
-                    </span>
+                    <span>Arnav-Singh-5080</span>
                 </a>
-
             </div>
 
-            <!-- Version footer -->
-            <div style="
-                text-align:center; margin-top:16px;
-                font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
-                color:rgba(200,185,140,0.18);
-            ">CricScope v2.0 · IPL Edition</div>
-
+            <div style="text-align:center;margin-top:16px;font-size:9px;letter-spacing:1.5px;
+                        text-transform:uppercase;color:rgba(200,185,140,0.18);">CricScope v2.0 · IPL Edition</div>
         </div>
     """, unsafe_allow_html=True)
 
