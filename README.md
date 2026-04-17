@@ -39,6 +39,20 @@
 
 <br/>
 
+<br/>
+
+<div align="center">
+
+## Live Demo
+
+<a href="https://cricscope-live.streamlit.app/" target="_blank">
+  <img src="https://img.shields.io/badge/Launch%20App-CricScope-d4af37?style=for-the-badge&logo=streamlit&logoColor=white" />
+</a>
+
+</div>
+
+<br/>
+
 ---
 
 <br/>
