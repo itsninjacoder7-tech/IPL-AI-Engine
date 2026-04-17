@@ -44,23 +44,49 @@ html, body, [class*="css"], .stApp {
     min-height: 100vh;
 }
 
-/* Hide header bar visually but keep sidebar toggle button accessible */
+/* Header: transparent, no border, but keep it in DOM for toggle button */
 [data-testid="stHeader"] {
     background: transparent !important;
     border-bottom: none !important;
+    height: 0px !important;
+    min-height: 0px !important;
+    overflow: visible !important;
 }
-[data-testid="stHeader"]::before,
-[data-testid="stHeader"]::after { display: none; }
 
-/* Hide everything in header EXCEPT the sidebar collapse button */
-[data-testid="stHeader"] > * { visibility: hidden; }
-[data-testid="stHeader"] [data-testid="stSidebarCollapsedControl"],
-[data-testid="stHeader"] button[kind="header"],
-[data-testid="stHeader"] [aria-label="Open sidebar"],
-[data-testid="stHeader"] [aria-label="Close sidebar"] {
+/* Hide Streamlit toolbar/menu items */
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+#MainMenu,
+footer { visibility: hidden; display: none; }
+
+/* Sidebar collapsed re-open button — cover every selector Streamlit uses */
+[data-testid="stSidebarCollapsedControl"] {
     visibility: visible !important;
-    background: rgba(212,175,55,0.08) !important;
-    border: 1px solid rgba(212,175,55,0.2) !important;
+    display: flex !important;
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
+    z-index: 9999 !important;
+    background: rgba(12,12,12,0.92) !important;
+    border: 1px solid rgba(212,175,55,0.3) !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    backdrop-filter: blur(8px) !important;
+}
+[data-testid="stSidebarCollapsedControl"] button,
+[data-testid="stSidebarCollapsedControl"] svg {
+    color: #d4af37 !important;
+    stroke: #d4af37 !important;
+    visibility: visible !important;
+}
+
+/* Sidebar collapse button (arrow inside open sidebar) */
+[data-testid="stSidebarCollapseButton"] {
+    visibility: visible !important;
+}
+[data-testid="stSidebarCollapseButton"] button {
+    background: rgba(212,175,55,0.06) !important;
+    border: 1px solid rgba(212,175,55,0.15) !important;
     border-radius: 8px !important;
     color: #d4af37 !important;
 }
