@@ -245,7 +245,9 @@ if st.session_state.page == "Analysis":
 
     overs = st.slider("Match Progress", 1, 20, 10)
 
+    # -----------------------------------
     # LOGO DISPLAY
+    # -----------------------------------
     team1 = team_data[batting_team]
     team2 = team_data[bowling_team]
 
@@ -272,8 +274,53 @@ if st.session_state.page == "Analysis":
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    # -----------------------------------
+    # CALCULATIONS
+    # -----------------------------------
+    runs_left = target - score
+    balls_left = 120 - (overs * 6)
+    wickets_remaining = 10 - wickets
+    crr = score / overs
+    rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # -----------------------------------
+    # ANALYZE BUTTON
+    # -----------------------------------
+    if st.button("Analyze Match"):
+
+        input_df = pd.DataFrame({
+            'batting_team':[batting_team],
+            'bowling_team':[bowling_team],
+            'city':[city],
+            'runs_left':[runs_left],
+            'balls_left':[balls_left],
+            'wickets':[wickets_remaining],
+            'target':[target],
+            'crr':[crr],
+            'rrr':[rrr]
+        })
+
+        win = pipe.predict_proba(input_df)[0][1]
+
+        # -----------------------------------
+        # RESULT DISPLAY (PREMIUM)
+        # -----------------------------------
+        st.markdown("### Prediction Result")
+
+        colX, colY = st.columns(2)
+
+        with colX:
+            st.metric(team1['abbr'], f"{round(win*100)}%")
+
+        with colY:
+            st.metric(team2['abbr'], f"{round((1-win)*100)}%")
+
+        st.progress(float(win))
+
+    st.markdown('</div>', unsafe_allow_html=True)
+    
 # -----------------------------------
 # SIMULATION PAGE
 # -----------------------------------
