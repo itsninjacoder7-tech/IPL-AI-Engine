@@ -283,12 +283,17 @@ if st.session_state.page == "Analysis":
     crr = score / overs
     rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    # -----------------------------------
+    # END CARD
+    # -----------------------------------
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # -----------------------------------
-    # ANALYZE BUTTON
+    # ANALYZE BUTTON (VISIBLE ✅)
     # -----------------------------------
-    if st.button("Analyze Match"):
+    analyze = st.button("Analyze Match", use_container_width=True)
+
+    if analyze:
 
         input_df = pd.DataFrame({
             'batting_team':[batting_team],
@@ -304,9 +309,6 @@ if st.session_state.page == "Analysis":
 
         win = pipe.predict_proba(input_df)[0][1]
 
-        # -----------------------------------
-        # RESULT DISPLAY (PREMIUM)
-        # -----------------------------------
         st.markdown("### Prediction Result")
 
         colX, colY = st.columns(2)
@@ -317,9 +319,7 @@ if st.session_state.page == "Analysis":
         with colY:
             st.metric(team2['abbr'], f"{round((1-win)*100)}%")
 
-        st.progress(float(win))
-
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.progress(float(win)) 
     
 # -----------------------------------
 # SIMULATION PAGE
