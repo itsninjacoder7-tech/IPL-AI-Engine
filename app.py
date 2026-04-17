@@ -226,10 +226,10 @@ pipe = train_model()
 # -----------------------------------
 if st.session_state.page == "Analysis":
 
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-
     teams = list(team_data.keys())
     cities = ['Mumbai','Chennai','Kolkata','Delhi','Bangalore','Hyderabad','Jaipur']
+
+    st.subheader("Match Setup")
 
     col1, col2 = st.columns(2)
 
@@ -245,9 +245,7 @@ if st.session_state.page == "Analysis":
 
     overs = st.slider("Match Progress", 1, 20, 10)
 
-    # -----------------------------------
-    # LOGO DISPLAY
-    # -----------------------------------
+    # LOGOS
     team1 = team_data[batting_team]
     team2 = team_data[bowling_team]
 
@@ -274,26 +272,17 @@ if st.session_state.page == "Analysis":
         </div>
         """, unsafe_allow_html=True)
 
-    # -----------------------------------
     # CALCULATIONS
-    # -----------------------------------
     runs_left = target - score
     balls_left = 120 - (overs * 6)
     wickets_remaining = 10 - wickets
     crr = score / overs
     rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
-    # -----------------------------------
-    # END CARD
-    # -----------------------------------
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("---")
 
-    # -----------------------------------
-    # ANALYZE BUTTON (VISIBLE ✅)
-    # -----------------------------------
-    analyze = st.button("Analyze Match", use_container_width=True)
-
-    if analyze:
+    # BUTTON (NOW WILL WORK 100%)
+    if st.button("Analyze Match", use_container_width=True):
 
         input_df = pd.DataFrame({
             'batting_team':[batting_team],
@@ -309,7 +298,7 @@ if st.session_state.page == "Analysis":
 
         win = pipe.predict_proba(input_df)[0][1]
 
-        st.markdown("### Prediction Result")
+        st.subheader("Prediction Result")
 
         colX, colY = st.columns(2)
 
@@ -319,7 +308,7 @@ if st.session_state.page == "Analysis":
         with colY:
             st.metric(team2['abbr'], f"{round((1-win)*100)}%")
 
-        st.progress(float(win)) 
+        st.progress(float(win))
     
 # -----------------------------------
 # SIMULATION PAGE
