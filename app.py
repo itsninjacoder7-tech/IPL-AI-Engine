@@ -831,8 +831,14 @@ if st.session_state.page == "Dashboard":
                     transition:all 0.25s ease;
                     margin-bottom:12px;
                 ">
-                    <img src="{tdata['logo']}" style="width:60px;height:60px;object-fit:contain;border-radius:50%;
-                               box-shadow:0 0 18px {tdata['color']}40;" />
+                    <div style="width:72px;height:72px;border-radius:50%;margin:0 auto;
+                                overflow:hidden;background:#111;
+                                box-shadow:0 0 20px {tdata['color']}50;
+                                display:flex;align-items:center;justify-content:center;">
+                        <img src="{tdata['logo']}"
+                             style="width:100%;height:100%;object-fit:cover;
+                                    mix-blend-mode:screen;border-radius:50%;" />
+                    </div>
                     <div style="font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600;
                                 color:{tdata['color']}; letter-spacing:2px; margin-top:12px;">
                         {tdata['abbr']}
@@ -927,9 +933,14 @@ if st.session_state.page == "Analysis":
             <div style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);
                         border-radius:20px;padding:28px;text-align:center;
                         box-shadow:0 0 40px {t1['color']}12;">
-                <img src="{t1['logo']}"
-                     style="width:88px;height:88px;object-fit:contain;border-radius:50%;
-                            box-shadow:0 0 24px {t1['color']}55;" />
+                <div style="width:100px;height:100px;border-radius:50%;margin:0 auto;
+                            overflow:hidden;background:#111;
+                            box-shadow:0 0 28px {t1['color']}60;
+                            display:flex;align-items:center;justify-content:center;">
+                    <img src="{t1['logo']}"
+                         style="width:100%;height:100%;object-fit:cover;
+                                mix-blend-mode:screen;" />
+                </div>
                 <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;
                             color:{t1['color']};letter-spacing:3px;margin-top:14px;">
                     {t1['abbr']}
@@ -954,9 +965,14 @@ if st.session_state.page == "Analysis":
             <div style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);
                         border-radius:20px;padding:28px;text-align:center;
                         box-shadow:0 0 40px {t2['color']}12;">
-                <img src="{t2['logo']}"
-                     style="width:88px;height:88px;object-fit:contain;border-radius:50%;
-                            box-shadow:0 0 24px {t2['color']}55;" />
+                <div style="width:100px;height:100px;border-radius:50%;margin:0 auto;
+                            overflow:hidden;background:#111;
+                            box-shadow:0 0 28px {t2['color']}60;
+                            display:flex;align-items:center;justify-content:center;">
+                    <img src="{t2['logo']}"
+                         style="width:100%;height:100%;object-fit:cover;
+                                mix-blend-mode:screen;" />
+                </div>
                 <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;
                             color:{t2['color']};letter-spacing:3px;margin-top:14px;">
                     {t2['abbr']}
