@@ -21,6 +21,17 @@ st.set_page_config(page_title="IPL AI Engine", layout="wide")
 st.markdown("""
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.2px;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+}
+
 [data-testid="stAppViewContainer"] {
     background: radial-gradient(circle at top, #0f172a, #020617);
     color: #e2e8f0;
@@ -32,14 +43,16 @@ st.markdown("""
 }
 
 .hero h1 {
-    font-size: 52px;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 .card {
     background: rgba(15, 23, 42, 0.7);
     padding: 25px;
     border-radius: 20px;
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
     border: 1px solid rgba(255,255,255,0.08);
     margin-top: 25px;
 }
@@ -47,8 +60,11 @@ st.markdown("""
 .stButton>button {
     background: linear-gradient(135deg,#ff416c,#ff4b2b);
     color: white;
-    border-radius: 12px;
+    border-radius: 14px;
     height: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.3px;
 }
 
 header {visibility: hidden;}
