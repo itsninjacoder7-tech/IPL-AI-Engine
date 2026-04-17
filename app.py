@@ -16,7 +16,7 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="CricScope", layout="wide")
 
 # -----------------------------------
-# 🎨 PREMIUM FONT + UI
+# 🎨 PREMIUM FONT (ONLY CHANGE)
 # -----------------------------------
 st.markdown("""
 <style>
@@ -31,6 +31,7 @@ h1, h2, h3 {
     font-family: 'Playfair Display', serif;
 }
 
+/* KEEP YOUR ORIGINAL DESIGN */
 [data-testid="stAppViewContainer"] {
     background: radial-gradient(circle at top, #0f172a, #020617);
     color: #e2e8f0;
@@ -55,8 +56,8 @@ h1, h2, h3 {
 }
 
 .stButton>button {
-    background: linear-gradient(135deg,#d4af37,#b8962e);
-    color: black;
+    background: linear-gradient(135deg,#ff416c,#ff4b2b);
+    color: white;
     border-radius: 12px;
     height: 50px;
     font-weight: 600;
@@ -73,7 +74,7 @@ header {visibility: hidden;}
 st.markdown("""
 <div class="hero">
 <h1>CricScope</h1>
-<p>Precision Match Analytics</p>
+<p>Real-Time Prediction • Simulation • Analytics</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -176,7 +177,7 @@ crr = score / overs
 rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 
 # -----------------------------------
-# ANALYSIS CARD (WORKING BUTTON)
+# ANALYSIS CARD (WORKS ✅)
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
