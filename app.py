@@ -16,57 +16,94 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="IPL AI Engine", layout="wide")
 
 # -----------------------------------
-# 🎨 UI STYLE
+# 🎨 PREMIUM UI STYLE
 # -----------------------------------
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
-    letter-spacing: -0.2px;
 }
 
-h1, h2, h3 {
-    font-weight: 700;
-}
-
+/* Background */
 [data-testid="stAppViewContainer"] {
-    background: radial-gradient(circle at top, #0f172a, #020617);
+    background: radial-gradient(circle at top, #0f172a, #020617 70%);
     color: #e2e8f0;
 }
 
+/* HERO */
 .hero {
     text-align: center;
-    padding: 40px;
+    padding: 60px 20px 30px;
 }
 
 .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 56px;
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-weight: 700;
+    background: linear-gradient(90deg,#ff416c,#ff4b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+.hero p {
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+/* CARDS */
 .card {
-    background: rgba(15, 23, 42, 0.7);
-    padding: 25px;
-    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.65);
+    padding: 28px;
+    border-radius: 22px;
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.06);
     margin-top: 25px;
+    box-shadow: 0 0 40px rgba(255,75,43,0.08);
+    transition: 0.3s ease;
 }
 
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 60px rgba(255,75,43,0.15);
+}
+
+/* HEADINGS */
+h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+}
+
+/* BUTTON */
 .stButton>button {
     background: linear-gradient(135deg,#ff416c,#ff4b2b);
     color: white;
     border-radius: 14px;
     height: 50px;
     font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 0.3px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(255,75,43,0.4);
+    transition: 0.3s ease;
 }
 
+.stButton>button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(255,75,43,0.6);
+}
+
+/* INPUTS */
+.stSelectbox div, .stNumberInput div {
+    border-radius: 12px !important;
+}
+
+/* SLIDER */
+.stSlider {
+    padding-top: 15px;
+}
+
+/* HIDE HEADER */
 header {visibility: hidden;}
 
 </style>
@@ -77,8 +114,8 @@ header {visibility: hidden;}
 # -----------------------------------
 st.markdown("""
 <div class="hero">
-<h1>🏏 IPL AI Match Engine</h1>
-<p>Real-Time Prediction • Simulation • Analytics</p>
+<h1>IPL AI Match Engine</h1>
+<p>Real-Time Prediction • Simulation • Advanced Analytics</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -144,7 +181,7 @@ pipe = train_model()
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
-st.subheader("🏏 Match Setup")
+st.subheader("Match Setup")
 
 teams = [
     'Chennai Super Kings','Delhi Capitals','Kings XI Punjab',
@@ -167,7 +204,7 @@ with col2:
     score = st.number_input("Score", 0, value=50)
     wickets = st.number_input("Wickets", 0, 10, value=2)
 
-overs = st.slider("🎮 Match Progress", 1, 20, 10)
+overs = st.slider("Match Progress", 1, 20, 10)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -185,7 +222,7 @@ rrr = (runs_left * 6) / balls_left if balls_left > 0 else 0
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
-st.subheader("📊 Match Analysis")
+st.subheader("Match Analysis")
 
 if st.button("Analyze Match"):
 
@@ -206,8 +243,7 @@ if st.button("Analyze Match"):
     st.progress(float(win))
     st.write(f"Win Probability: {round(win*100)}%")
 
-    # 🔥 DARK GRAPH
-    st.subheader("📈 Win Probability Curve")
+    st.subheader("Win Probability Curve")
 
     overs_range = list(range(1, 21))
     probs = []
@@ -218,7 +254,6 @@ if st.button("Analyze Match"):
         probs.append(pipe.predict_proba(temp_df)[0][1])
 
     fig, ax = plt.subplots()
-
     fig.patch.set_facecolor('#020617')
     ax.set_facecolor('#0f172a')
 
@@ -243,7 +278,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # -----------------------------------
 st.markdown('<div class="card">', unsafe_allow_html=True)
 
-st.subheader("🎮 Live Simulation")
+st.subheader("Live Simulation")
 
 if st.button("Start Simulation"):
 
@@ -263,10 +298,10 @@ if st.button("Start Simulation"):
 
         if event == "W":
             current_wickets += 1
-            text = f"❌ WICKET! {current_score}/{current_wickets}"
+            text = f"WICKET! {current_score}/{current_wickets}"
         else:
             current_score += event
-            text = f"🏏 {event} runs → {current_score}/{current_wickets}"
+            text = f"{event} runs → {current_score}/{current_wickets}"
 
         balls += 1
 
