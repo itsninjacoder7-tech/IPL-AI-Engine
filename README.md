@@ -4,7 +4,7 @@
 
 <br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Georgia&size=24&duration=3000&pause=1000&color=D4AF37&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=80&lines=Real-time+IPL+Win+Probability+Engine;Fintech-grade+Cricket+Intelligence;Official+NSoC+%2726+Project" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Georgia&size=24&duration=3000&pause=1000&color=D4AF37&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=80&lines=Fintech-grade+Cricket+Intelligence;Official+NSoC+%2726+Project" alt="Typing SVG" />
 
 <br/><br/>
 
@@ -54,7 +54,6 @@
 Built with a fintech-inspired dark UI featuring glassmorphism cards, gold gradients, and a premium serif + mono type system. Every design decision was intentional: this is not a student project — it's a production-grade sports analytics product.
 
 > **NSoC 2026 — Project Admin:** [Arnav Singh](https://github.com/Arnav-Singh-5080)
-> NIT Surat Open Source Contributions · Official Selected Project
 
 <br/>
 
@@ -130,8 +129,6 @@ Built with a fintech-inspired dark UI featuring glassmorphism cards, gold gradie
 | Styling | Glassmorphism, CSS blend modes | Premium visual design |
 | ML Pipeline | scikit-learn | Preprocessing + LogReg |
 | Data | Pandas, NumPy | Feature engineering |
-| Fonts | Cormorant Garamond, DM Sans, DM Mono | Typography system |
-| Logo Rendering | `mix-blend-mode: screen` | White background removal |
 
 </div>
 
@@ -294,11 +291,11 @@ Visit [http://localhost:8501](http://localhost:8501)
 
 ## NSoC 2026
 
-<img src="https://img.shields.io/badge/NIT%20Surat-Open%20Source%20Contributions%202026-d4af37?style=for-the-badge&logo=github&logoColor=white" />
+<img src="https://img.shields.io/badge/Open%20Source%20Contributions%202026-d4af37?style=for-the-badge&logo=github&logoColor=white" />
 
 <br/><br/>
 
-CricScope is an **officially selected project under NSoC 2026** — NIT Surat Open Source Contributions.
+CricScope is an **officially selected project under NSoC 2026** (Nexus Spring of Code).
 Contributors are evaluated on code quality, UI consistency, and ML improvements.
 
 </div>
@@ -357,85 +354,10 @@ git push origin feature/your-feature-name
 
 <div align="center">
 
-## Design Reference
-
-</div>
-
-```
-Color Palette
-──────────────────────────────────────────────────
-  Primary Gold       #d4af37
-  Light Gold         #f0d060
-  Dark Gold          #a07820
-  Obsidian BG        #080808
-  Surface Card       rgba(255, 255, 255, 0.025)
-  Gold Border        rgba(212, 175, 55, 0.12)
-
-Typography
-──────────────────────────────────────────────────
-  Display    Cormorant Garamond   weight 600
-  Body       DM Sans              weight 300–500
-  Data/Mono  DM Mono              weight 400–500
-
-Card System
-──────────────────────────────────────────────────
-  backdrop-filter : blur(20px)
-  border          : 1px solid rgba(212,175,55,0.12)
-  border-radius   : 20px – 24px
-  box-shadow      : 0 0 40px <team-color>12
-
-Logo Rendering
-──────────────────────────────────────────────────
-  container bg    : #111
-  img style       : mix-blend-mode: screen
-  overflow        : hidden on circular wrapper
-```
-
-<br/>
-
----
-
-<br/>
-
-<div align="center">
-
-## Roadmap
-
-```
- v2.0  ──────────────────────────────  Current release
- v2.1  ────────────────              Over-by-over chart
- v2.2  ─────────────                 IPL 2021–24 dataset
- v2.3  ──────────                    Player impact overlay
- v3.0  ────                          Multi-model dashboard
-```
-
-- [ ] Animated over-by-over win probability graph
-- [ ] Historical head-to-head team stats
-- [ ] Player-level impact analysis
-- [ ] IPL 2021–2024 dataset support
-- [ ] Random Forest / XGBoost model toggle
-- [ ] Mobile-responsive layout
-- [ ] Downloadable match report PDF
-
-</div>
-
-<br/>
-
----
-
-<br/>
-
-<div align="center">
 
 ## Project Admin
 
-<img src="https://github-readme-stats.vercel.app/api?username=Arnav-Singh-5080&show_icons=true&theme=dark&title_color=d4af37&icon_color=d4af37&text_color=f0e8cc&bg_color=0c0c0c&border_color=d4af3740" width="440"/>
 
-&nbsp;&nbsp;
-
-<img src="https://github-readme-streak-stats.herokuapp.com?user=Arnav-Singh-5080&theme=dark&background=0c0c0c&border=d4af3740&ring=d4af37&fire=f0d060&currStreakLabel=d4af37&sideLabels=d4af37&dates=f0e8cc70" width="440"/>
-
-<br/><br/>
 
 **Arnav Singh** — Project Admin, NSoC 2026
 
@@ -450,8 +372,6 @@ Logo Rendering
 ---
 
 *If this project helped you, consider leaving a star. It helps more contributors find it.*
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Arnav-Singh-5080/cricscope&type=Date&theme=dark)](https://star-history.com/#Arnav-Singh-5080/cricscope&Date)
 
 <br/>
 
