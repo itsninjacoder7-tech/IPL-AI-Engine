@@ -1,278 +1,460 @@
 <div align="center">
 
-<br />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=d4af37&height=200&section=header&text=CricScope&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=Precision%20Match%20Analytics%20for%20Modern%20Cricket&descAlignY=60&descSize=18&descColor=f0d060&animation=fadeIn" width="100%"/>
 
-```
-   ██████╗██████╗ ██╗ ██████╗███████╗ ██████╗ ██████╗ ██████╗ ███████╗
-  ██╔════╝██╔══██╗██║██╔════╝██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝
-  ██║     ██████╔╝██║██║     ███████╗██║     ██║   ██║██████╔╝█████╗
-  ██║     ██╔══██╗██║██║     ╚════██║██║     ██║   ██║██╔═══╝ ██╔══╝
-  ╚██████╗██║  ██║██║╚██████╗███████║╚██████╗╚██████╔╝██║     ███████╗
-   ╚═════╝╚═╝  ╚═╝╚═╝ ╚═════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚══════╝
-```
+<br/>
 
-### **Precision Match Analytics for Modern Cricket**
+<img src="https://readme-typing-svg.demolab.com?font=Georgia&size=24&duration=3000&pause=1000&color=D4AF37&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=80&lines=Real-time+IPL+Win+Probability+Engine;Fintech-grade+Cricket+Intelligence;Official+NSoC+%2726+Project" alt="Typing SVG" />
 
-<br />
+<br/><br/>
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-3776ab?style=for-the-badge&logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![Pandas](https://img.shields.io/badge/Pandas-Data-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-Compute-013243?style=for-the-badge&logo=numpy&logoColor=white)
 
-<br />
+<br/>
 
-> *A luxury-grade IPL match intelligence dashboard — real-time win probability powered by machine learning, wrapped in a fintech-inspired dark UI.*
+![License](https://img.shields.io/badge/License-MIT-d4af37?style=for-the-badge)
+![NSoC](https://img.shields.io/badge/NSoC-2026-brightgreen?style=for-the-badge&logo=github&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-d4af37?style=for-the-badge&logo=git&logoColor=white)
 
-<br />
+<br/>
 
----
+<a href="https://github.com/Arnav-Singh-5080/cricscope/stargazers">
+  <img src="https://img.shields.io/github/stars/Arnav-Singh-5080/cricscope?style=social" />
+</a>
+&nbsp;
+<a href="https://github.com/Arnav-Singh-5080/cricscope/network/members">
+  <img src="https://img.shields.io/github/forks/Arnav-Singh-5080/cricscope?style=social" />
+</a>
+&nbsp;
+<a href="https://github.com/Arnav-Singh-5080/cricscope/issues">
+  <img src="https://img.shields.io/github/issues/Arnav-Singh-5080/cricscope?style=social" />
+</a>
 
 </div>
 
-<br />
+<br/>
 
-## 📸 &nbsp;Preview
+---
+
+<br/>
 
 <div align="center">
 
-| Dashboard | Match Analysis | Prediction Output |
-|:---------:|:--------------:|:-----------------:|
-| Team overview with live stats | Configure match state in real time | Gold-gradient win probability cards |
+## What is CricScope?
 
 </div>
 
-<br />
+**CricScope** is a luxury-grade IPL match intelligence dashboard that computes real-time win probabilities using machine learning — trained on historical ball-by-ball delivery data spanning 2008–2020.
+
+Built with a fintech-inspired dark UI featuring glassmorphism cards, gold gradients, and a premium serif + mono type system. Every design decision was intentional: this is not a student project — it's a production-grade sports analytics product.
+
+> **NSoC 2026 — Project Admin:** [Arnav Singh](https://github.com/Arnav-Singh-5080)
+> NIT Surat Open Source Contributions · Official Selected Project
+
+<br/>
 
 ---
 
-## ✨ &nbsp;Features
+<br/>
 
-- 🏏 &nbsp;**Real-time Win Probability** — Logistic regression model trained on ball-by-ball IPL delivery data
-- 📊 &nbsp;**Live Match State Inputs** — Target, score, overs, wickets — all configurable on the fly
-- ⚡ &nbsp;**Instant Predictions** — CRR, RRR, balls remaining, wickets in hand — all computed and displayed
-- 🎨 &nbsp;**Luxury Dark UI** — Glassmorphism cards, gold gradients, Cormorant Garamond typography
-- 🏆 &nbsp;**All 8 IPL Teams** — CSK, MI, RCB, KKR, DC, RR, SRH, PBKS with team-colored glow effects
-- 🔢 &nbsp;**Confidence Scoring** — High / Moderate / Close verdict labels with probability breakdown
-- 👤 &nbsp;**Premium Sidebar** — Profile card with clickable email, LinkedIn, and GitHub links
+<div align="center">
 
-<br />
+## Architecture
 
----
-
-## 🧠 &nbsp;How It Works
+</div>
 
 ```
-Ball-by-ball delivery data
-        │
-        ▼
-Feature Engineering
-  ├── Current Run Rate (CRR)
-  ├── Required Run Rate (RRR)
-  ├── Runs Left
-  ├── Balls Remaining
-  ├── Wickets in Hand
-  └── Target Score
-        │
-        ▼
-Logistic Regression Pipeline
-  ├── OneHotEncoder (team names, city)
-  └── LogisticRegression (max_iter=1000)
-        │
-        ▼
-Win Probability [0.0 → 1.0]
+┌─────────────────────────────────────────────────────────────────────┐
+│                         CricScope Pipeline                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                       │
+│   matches.csv ────┐                                                   │
+│                   ├──► Merge on match_id ──► Filter: Inning 2        │
+│   deliveries.csv ─┘                │                                  │
+│                                    │                                  │
+│                      ┌─────────────▼───────────────┐                 │
+│                      │      Feature Engineering      │                │
+│                      │                               │                │
+│                      │  current_score  (cumsum)      │                │
+│                      │  runs_left      target - score│                │
+│                      │  balls_left     120 - ball no.│                │
+│                      │  wickets        10 - dismissed│                │
+│                      │  CRR            score / over  │                │
+│                      │  RRR            runs*6 / balls│                │
+│                      └─────────────┬───────────────┘                 │
+│                                    │                                  │
+│                      ┌─────────────▼───────────────┐                 │
+│                      │      Sklearn Pipeline         │                │
+│                      │                               │                │
+│                      │  ColumnTransformer            │                │
+│                      │    OneHotEncoder               │                │
+│                      │      batting_team              │                │
+│                      │      bowling_team              │                │
+│                      │      city                      │                │
+│                      │    passthrough                 │                │
+│                      │      numeric features          │                │
+│                      │                               │                │
+│                      │  LogisticRegression           │                │
+│                      │    max_iter = 1000             │                │
+│                      └─────────────┬───────────────┘                 │
+│                                    │                                  │
+│                      ┌─────────────▼───────────────┐                 │
+│                      │   predict_proba() → [0, 1]   │                │
+│                      │   + Confidence: High/Mod/Close│                │
+│                      └─────────────────────────────┘                 │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-The model is trained on **second-innings** deliveries only, where the chase context (target, required rate, wickets) is most predictive of match outcome.
-
-<br />
+<br/>
 
 ---
 
-## 🗂️ &nbsp;Project Structure
+<br/>
+
+<div align="center">
+
+## Tech Stack
+
+<img src="https://skillicons.dev/icons?i=python,git,github,vscode&theme=dark" />
+
+<br/><br/>
+
+| Layer | Technology | Purpose |
+|:------|:-----------|:--------|
+| Frontend | Streamlit + Custom CSS | UI rendering & layout |
+| Styling | Glassmorphism, CSS blend modes | Premium visual design |
+| ML Pipeline | scikit-learn | Preprocessing + LogReg |
+| Data | Pandas, NumPy | Feature engineering |
+| Fonts | Cormorant Garamond, DM Sans, DM Mono | Typography system |
+| Logo Rendering | `mix-blend-mode: screen` | White background removal |
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center">
+
+## Features
+
+</div>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Prediction Engine**
+
+- Real-time win probability on every input change
+- Computes CRR, RRR, balls remaining, wickets in hand
+- Confidence scoring: High / Moderate / Close
+- Dual prediction cards — batting vs bowling team
+
+</td>
+<td width="50%" valign="top">
+
+**Design System**
+
+- Glassmorphism cards with `backdrop-filter: blur`
+- Gold gradient typography (`#d4af37` → `#f0d060`)
+- `mix-blend-mode: screen` for clean logo rendering
+- Cormorant Garamond + DM Sans + DM Mono
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**All 8 IPL Teams**
+
+- CSK · MI · RCB · KKR · DC · RR · SRH · PBKS
+- Team-colored glow effects per brand identity
+- Circular logo containers with dark base layer
+
+</td>
+<td width="50%" valign="top">
+
+**Sidebar & Navigation**
+
+- Premium profile card with clickable contact links
+- Built-by section with avatar initials, role label
+- Navigation between Dashboard and Analysis pages
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center">
+
+## Project Structure
+
+</div>
 
 ```
 cricscope/
 │
-├── app.py                  # Main Streamlit application
-├── matches.csv             # IPL match-level data
+├── app.py                  # Main Streamlit app — UI + ML inference
+├── matches.csv             # IPL match-level data  (2008–2020)
 ├── deliveries.csv          # Ball-by-ball delivery data
 ├── requirements.txt        # Python dependencies
-└── README.md               # You are here
+└── README.md               # Project documentation
 ```
 
-<br />
+<br/>
 
 ---
 
-## 🚀 &nbsp;Getting Started
+<br/>
+
+<div align="center">
+
+## Getting Started
+
+</div>
 
 ### Prerequisites
 
-- Python 3.9 or higher
-- `matches.csv` and `deliveries.csv` (IPL dataset — see [Kaggle](https://www.kaggle.com/datasets/patrickb1912/ipl-complete-dataset-20082020))
+- Python 3.9+
+- IPL dataset: [Kaggle — IPL Complete Dataset 2008–2020](https://www.kaggle.com/datasets/patrickb1912/ipl-complete-dataset-20082020)
 
-### Installation
+---
 
-**1. Clone the repository**
+### 1 — Clone
 
 ```bash
 git clone https://github.com/Arnav-Singh-5080/cricscope.git
 cd cricscope
 ```
 
-**2. Create a virtual environment** *(recommended)*
+### 2 — Virtual environment
 
 ```bash
+# Create
 python -m venv venv
-source venv/bin/activate        # macOS / Linux
-venv\Scripts\activate           # Windows
+
+# Activate — macOS / Linux
+source venv/bin/activate
+
+# Activate — Windows
+venv\Scripts\activate
 ```
 
-**3. Install dependencies**
+### 3 — Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**4. Add the dataset**
-
-Place `matches.csv` and `deliveries.csv` in the root directory alongside `app.py`.
-
-**5. Run the app**
-
-```bash
-streamlit run app.py
-```
-
-Open [http://localhost:8501](http://localhost:8501) in your browser.
-
-<br />
-
----
-
-## 📦 &nbsp;Requirements
-
-```txt
-streamlit>=1.28.0
-pandas>=1.5.0
-numpy>=1.23.0
-scikit-learn>=1.2.0
-```
-
-Or install directly:
+Or manually:
 
 ```bash
 pip install streamlit pandas numpy scikit-learn
 ```
 
-<br />
+### 4 — Dataset
 
----
+Place both CSV files in the project root alongside `app.py`:
 
-## 🏏 &nbsp;Supported Teams
-
-| Team | Abbr | 
-|------|------|
-| Chennai Super Kings | CSK |
-| Mumbai Indians | MI |
-| Royal Challengers Bangalore | RCB |
-| Kolkata Knight Riders | KKR |
-| Delhi Capitals | DC |
-| Rajasthan Royals | RR |
-| Sunrisers Hyderabad | SRH |
-| Punjab Kings | PBKS |
-
-<br />
-
----
-
-## 🎨 &nbsp;Design System
-
-| Element | Choice |
-|---------|--------|
-| **Display Font** | Cormorant Garamond (serif) |
-| **Body Font** | DM Sans |
-| **Mono / Data Font** | DM Mono |
-| **Primary Accent** | `#d4af37` Gold |
-| **Background** | `#080808` Obsidian |
-| **Card Style** | Glassmorphism — `backdrop-filter: blur` |
-| **Logo Rendering** | `mix-blend-mode: screen` on dark container |
-
-<br />
-
----
-
-## 📈 &nbsp;Model Performance
-
-| Metric | Value |
-|--------|-------|
-| **Algorithm** | Logistic Regression |
-| **Training Data** | IPL 2008–2020 (ball-by-ball) |
-| **Features** | 9 (6 numeric + 3 categorical) |
-| **Innings Modelled** | 2nd innings only |
-| **Preprocessing** | OneHotEncoder + passthrough |
-
-> Model accuracy varies by match situation — probabilities near 50% indicate a genuinely close contest.
-
-<br />
-
----
-
-## 🔮 &nbsp;Roadmap
-
-- [ ] Over-by-over probability graph (animated line chart)
-- [ ] Historical head-to-head team stats panel
-- [ ] Player performance impact overlay
-- [ ] IPL 2021–2024 dataset integration
-- [ ] Mobile-responsive layout
-- [ ] Dark/light theme toggle
-
-<br />
-
----
-
-## 🤝 &nbsp;Contributing
-
-Contributions are welcome. To contribute:
-
-```bash
-# Fork the repo, then:
-git checkout -b feature/your-feature-name
-git commit -m "feat: add your feature"
-git push origin feature/your-feature-name
-# Open a Pull Request
+```
+cricscope/
+├── app.py
+├── matches.csv       ← place here
+└── deliveries.csv    ← place here
 ```
 
-Please keep PRs focused — one feature or fix per PR.
+### 5 — Run
 
-<br />
+```bash
+streamlit run app.py
+```
 
----
+Visit [http://localhost:8501](http://localhost:8501)
 
-## 📄 &nbsp;License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
-<br />
+<br/>
 
 ---
+
+<br/>
 
 <div align="center">
 
-**Built by Arnav Singh**
+## NSoC 2026
 
-[![Email](https://img.shields.io/badge/Email-itsarnav.singh80%40gmail.com-d4af37?style=flat-square&logo=gmail&logoColor=white)](mailto:itsarnav.singh80@gmail.com)
+<img src="https://img.shields.io/badge/NIT%20Surat-Open%20Source%20Contributions%202026-d4af37?style=for-the-badge&logo=github&logoColor=white" />
+
+<br/><br/>
+
+CricScope is an **officially selected project under NSoC 2026** — NIT Surat Open Source Contributions.
+Contributors are evaluated on code quality, UI consistency, and ML improvements.
+
+</div>
+
+<br/>
+
+### How to contribute
+
+```bash
+# 1. Fork this repository on GitHub
+
+# 2. Clone your fork
+git clone https://github.com/<your-username>/cricscope.git
+cd cricscope
+
+# 3. Create a feature branch
+git checkout -b feature/your-feature-name
+
+# 4. Make your changes, then commit
+git add .
+git commit -m "feat: describe your change clearly"
+
+# 5. Push to your fork
+git push origin feature/your-feature-name
+
+# 6. Open a Pull Request to the main branch of this repo
+```
+
+### Contribution guidelines
+
+- Follow the existing code style — inline styles for Streamlit HTML, clear docstrings for functions
+- Do **not** modify the ML pipeline unless your PR is specifically about model improvement
+- All UI changes must maintain the dark gold luxury aesthetic — no light backgrounds, no generic fonts
+- Test locally with both CSV files present before opening a PR
+- Keep PRs focused — one feature or fix per PR
+
+### Good first issues
+
+| Area | Task | Difficulty |
+|:-----|:-----|:----------:|
+| UI | Over-by-over probability animated line chart | Medium |
+| UI | Mobile-responsive sidebar and card layout | Medium |
+| UI | Add team win-rate stat pills to dashboard | Easy |
+| ML | Integrate IPL 2021–2024 dataset | Easy |
+| ML | Add Random Forest / XGBoost model toggle | Hard |
+| ML | Cross-validation accuracy display | Medium |
+| Feature | Historical head-to-head team stats panel | Medium |
+| Feature | Downloadable match report PDF | Hard |
+| Docs | Add screenshots/GIF demo to README | Easy |
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center">
+
+## Design Reference
+
+</div>
+
+```
+Color Palette
+──────────────────────────────────────────────────
+  Primary Gold       #d4af37
+  Light Gold         #f0d060
+  Dark Gold          #a07820
+  Obsidian BG        #080808
+  Surface Card       rgba(255, 255, 255, 0.025)
+  Gold Border        rgba(212, 175, 55, 0.12)
+
+Typography
+──────────────────────────────────────────────────
+  Display    Cormorant Garamond   weight 600
+  Body       DM Sans              weight 300–500
+  Data/Mono  DM Mono              weight 400–500
+
+Card System
+──────────────────────────────────────────────────
+  backdrop-filter : blur(20px)
+  border          : 1px solid rgba(212,175,55,0.12)
+  border-radius   : 20px – 24px
+  box-shadow      : 0 0 40px <team-color>12
+
+Logo Rendering
+──────────────────────────────────────────────────
+  container bg    : #111
+  img style       : mix-blend-mode: screen
+  overflow        : hidden on circular wrapper
+```
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center">
+
+## Roadmap
+
+```
+ v2.0  ──────────────────────────────  Current release
+ v2.1  ────────────────              Over-by-over chart
+ v2.2  ─────────────                 IPL 2021–24 dataset
+ v2.3  ──────────                    Player impact overlay
+ v3.0  ────                          Multi-model dashboard
+```
+
+- [ ] Animated over-by-over win probability graph
+- [ ] Historical head-to-head team stats
+- [ ] Player-level impact analysis
+- [ ] IPL 2021–2024 dataset support
+- [ ] Random Forest / XGBoost model toggle
+- [ ] Mobile-responsive layout
+- [ ] Downloadable match report PDF
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center">
+
+## Project Admin
+
+<img src="https://github-readme-stats.vercel.app/api?username=Arnav-Singh-5080&show_icons=true&theme=dark&title_color=d4af37&icon_color=d4af37&text_color=f0e8cc&bg_color=0c0c0c&border_color=d4af3740" width="440"/>
+
+&nbsp;&nbsp;
+
+<img src="https://github-readme-streak-stats.herokuapp.com?user=Arnav-Singh-5080&theme=dark&background=0c0c0c&border=d4af3740&ring=d4af37&fire=f0d060&currStreakLabel=d4af37&sideLabels=d4af37&dates=f0e8cc70" width="440"/>
+
+<br/><br/>
+
+**Arnav Singh** — Project Admin, NSoC 2026
+
+[![Email](https://img.shields.io/badge/Email-itsarnav.singh80%40gmail.com-d4af37?style=for-the-badge&logo=gmail&logoColor=white)](mailto:itsarnav.singh80@gmail.com)
 &nbsp;
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-arnav--singh-0077b5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arnav-singh-a87847351)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077b5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arnav-singh-a87847351)
 &nbsp;
-[![GitHub](https://img.shields.io/badge/GitHub-Arnav--Singh--5080-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Arnav-Singh-5080)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arnav-Singh-5080)
 
-<br />
+<br/>
 
-*If you found this useful, consider leaving a ⭐ on the repo.*
+---
 
-<br />
+*If this project helped you, consider leaving a star. It helps more contributors find it.*
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Arnav-Singh-5080/cricscope&type=Date&theme=dark)](https://star-history.com/#Arnav-Singh-5080/cricscope&Date)
+
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=d4af37&height=100&section=footer&animation=fadeIn" width="100%"/>
 
 </div>
