@@ -140,9 +140,9 @@ header {visibility: hidden;}
 # -----------------------------------
 st.markdown("""
 <div class="hero-box">
-<div class="tag">AI-POWERED MATCH INTELLIGENCE</div>
-<h1>IPL Engine</h1>
-<p>Advanced match prediction and real-time analytics — engineered for modern cricket intelligence.</p>
+<div class="tag">ADVANCED MATCH ANALYTICS</div>
+<h1>CricScope</h1>
+<p>Precision match analytics for modern cricket — powered by real-time data and predictive modeling.</p>
 
 <div class="stats">
     <div class="stat-item">
@@ -155,7 +155,7 @@ st.markdown("""
     </div>
     <div class="stat-item">
         <h2>10+</h2>
-        <p>FEATURES</p>
+        <p>KEY METRICS</p>
     </div>
 </div>
 </div>
